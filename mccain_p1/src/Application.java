@@ -1,13 +1,14 @@
 public class Application {
-    public static void main() {
-        /*
-        Encrypter en1;  //new instance of encrypter class...
-        Decrypter de1;  //new instance of decrypter class...
+    public static void main(String ...args) {
 
-        en1.encrypt(1234);
-        de1.decrypt(0189);
-        */
+        String exampleText = "1234";
+        String encReturned;
+        String decReturned;
 
-        //printf goes here...
+        encReturned = Encrypter.encrypt(exampleText);
+        decReturned = Decrypter.decrypt(encReturned);
+
+        System.out.println(encReturned);
+        System.out.println(decReturned);
     }
 }

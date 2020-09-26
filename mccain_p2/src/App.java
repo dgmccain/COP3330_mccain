@@ -20,14 +20,12 @@ public class App {
         displayBmiStatistics(bmiData);
     }
 
-    //review this method...
+    //determine if there is more input...
     private static boolean moreInput() {
-        //determine if there is more input...
         System.out.println("Would you like to enter data?");
         System.out.print("Enter Y to continue or N to quit: ");
         Scanner quitScan = new Scanner(System.in);
         String answer = quitScan.nextLine();
-        //try->catch exception here...
         switch (answer)
         {
             case "Y":
@@ -40,21 +38,32 @@ public class App {
         }
     }
 
+    //loop to print out all info in bmi array...
     private static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiData) {
-        //loop to print out all info in bmi array...
+        double sum = 0;
+        double average = 0;
         for (int i = 0; i < bmiData.size(); i++) {
+            sum += bmiData.get(i).BMICalculated;
+
+            //removed because only the BMI info is needed to average all users' data...
+            /*
             System.out.println("User " + (i+1) + "...");
             System.out.println("Height: " + bmiData.get(i).BMIHeight);
             System.out.println("Weight: " + bmiData.get(i).BMIWeight);
             System.out.println("BMI: " + bmiData.get(i).BMICalculated);
             System.out.println("Category: " + bmiData.get(i).BMICategory);
+             */
         }
+        average = sum / bmiData.size();
+        average = Math.round(average * 100); //round average to 2 decimal places...
+        average = average / 100;
+        System.out.println("Average BMI of all users: " + average);
     }
 
+    //print out current individual's info here...
     private static void displayBmiInfo(BodyMassIndex bmi) {
-        //print out current individual's info here...
-        System.out.println("Height: " + bmi.BMIHeight);
-        System.out.println("Weight: " + bmi.BMIWeight);
+        //System.out.println("Height: " + bmi.BMIHeight);
+        //System.out.println("Weight: " + bmi.BMIWeight);
         System.out.println("BMI: " + bmi.BMICalculated);
         System.out.println("Condition: " + bmi.BMICategory);
     }

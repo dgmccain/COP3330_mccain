@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
@@ -26,6 +27,7 @@ public class App {
         System.out.print("Enter 1 to continue or 2 to quit: ");
         Scanner quitScan = new Scanner(System.in);
         int answer = quitScan.nextInt();
+        //try->catch exception here...
         switch (answer)
         {
             case 1:
@@ -39,22 +41,29 @@ public class App {
     }
 
     private static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiData) {
-        //print array here...
-        System.out.println(bmiData);
-        //loop to print out info in array...
+        //loop to print out all info in bmi array...
+        for (int i = 0; i < bmiData.size(); i++) {
+            System.out.println("User " + (i+1) + "...");
+            System.out.println("Height: " + bmiData.get(i).BMIHeight);
+            System.out.println("Weight: " + bmiData.get(i).BMIWeight);
+            System.out.println("BMI: " + bmiData.get(i).BMICalculated);
+            System.out.println("Category: " + bmiData.get(i).BMICategory);
+        }
     }
 
     private static void displayBmiInfo(BodyMassIndex bmi) {
-        //print info here...
-        System.out.println(bmi);
-        //loop to print out info in array...
+        //print out current individual's info here...
+        System.out.println("Height: " + bmi.BMIHeight);
+        System.out.println("Weight: " + bmi.BMIWeight);
+        System.out.println("BMI: " + bmi.BMICalculated);
+        System.out.println("Condition: " + bmi.BMICategory);
     }
 
     private static double getUserWeight() {
         Scanner weightScan = new Scanner(System.in);
         System.out.print("Enter your weight in pounds: ");
         double resultW = weightScan.nextDouble();
-        resultW = resultW * 703; //703 is multiplied with pounds for bmi calculation...
+        resultW = resultW;
         //weightScan.nextLine();
         return resultW;
     }

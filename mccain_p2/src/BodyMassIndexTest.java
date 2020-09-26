@@ -21,6 +21,12 @@ public class BodyMassIndexTest {
         assertEquals(20.09, bmiTest.BMICalculated);
     }
 
+    @Test
+    void TestCategory() {
+        BodyMassIndex bmiTest = new BodyMassIndex(70, 140);
+        assertEquals("Normal weight", bmiTest.BMICategory);
+    }
+
     /*
     @Test
     void BodyMassIndex() {
@@ -28,6 +34,7 @@ public class BodyMassIndexTest {
         assertEquals(70, bmiTest.BMIHeight);
         assertEquals(140, bmiTest.BMIWeight);
         assertEquals(20.09, bmiTest.BMICalculated);
+        assertEquals(20.09, bmiTest.BMICategory);
     }
     */
 }

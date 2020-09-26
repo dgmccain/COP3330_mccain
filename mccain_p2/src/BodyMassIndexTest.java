@@ -4,21 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BodyMassIndexTest {
 
     @Test
-    void TestHeight() {
-        BodyMassIndex bmiTest = new BodyMassIndex(70, 140);
-        assertEquals(70, bmiTest.BMIHeight);
-    }
-
-    @Test
-    void TestWeight() {
-        BodyMassIndex bmiTest = new BodyMassIndex(70, 140);
-        assertEquals(140, bmiTest.BMIWeight);
-    }
-
-    @Test
-    void TestBMI() {
-        BodyMassIndex bmiTest = new BodyMassIndex(70, 140);
-        assertEquals(20.09, bmiTest.BMICalculated);
+    void TestScore() {
+        //bmi score will round because bmi object is set to round all values to 2 decimal places...
+        BodyMassIndex bmiTest = new BodyMassIndex(70.5678, 140.000);
+        assertEquals(19.76, bmiTest.BMICalculated);
     }
 
     @Test
@@ -26,15 +15,4 @@ public class BodyMassIndexTest {
         BodyMassIndex bmiTest = new BodyMassIndex(70, 140);
         assertEquals("Normal weight", bmiTest.BMICategory);
     }
-
-    /*
-    @Test
-    void BodyMassIndex() {
-        BodyMassIndex bmiTest = new BodyMassIndex(70, 140);
-        assertEquals(70, bmiTest.BMIHeight);
-        assertEquals(140, bmiTest.BMIWeight);
-        assertEquals(20.09, bmiTest.BMICalculated);
-        assertEquals(20.09, bmiTest.BMICategory);
-    }
-    */
 }

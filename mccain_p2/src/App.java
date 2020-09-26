@@ -22,37 +22,28 @@ public class App {
 
     //determine if there is more input...
     private static boolean moreInput() {
-        System.out.println("Would you like to enter data?");
-        System.out.print("Enter Y to continue or N to quit: ");
-        Scanner quitScan = new Scanner(System.in);
-        String answer = quitScan.nextLine();
-        switch (answer)
-        {
-            case "Y":
-                return true;
-            case "N":
-                return false;
-            default:
-                System.out.println("ERROR - you need to enter Y or N...");
-                return true;
-        }
+            System.out.println("Would you like to enter data?");
+            System.out.print("Enter Y to continue or N to quit: ");
+            Scanner quitScan = new Scanner(System.in);
+            String answer = quitScan.nextLine();
+            switch (answer) {
+                case "Y": //case-sensitive...
+                    return true;
+                case "N": //case-sensitive...
+                    return false;
+                default:
+                    System.out.println("ERROR - you need to enter Y or N...");
+                    moreInput();
+                    return true; //should not get called but including a return avoids error message...
+            }
     }
 
     //loop to print out all info in bmi array...
     private static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiData) {
         double sum = 0;
-        double average = 0;
+        double average;
         for (int i = 0; i < bmiData.size(); i++) {
             sum += bmiData.get(i).BMICalculated;
-
-            //removed because only the BMI info is needed to average all users' data...
-            /*
-            System.out.println("User " + (i+1) + "...");
-            System.out.println("Height: " + bmiData.get(i).BMIHeight);
-            System.out.println("Weight: " + bmiData.get(i).BMIWeight);
-            System.out.println("BMI: " + bmiData.get(i).BMICalculated);
-            System.out.println("Category: " + bmiData.get(i).BMICategory);
-             */
         }
         average = sum / bmiData.size();
         average = Math.round(average * 100); //round average to 2 decimal places...
@@ -75,6 +66,7 @@ public class App {
             System.out.print("Enter your weight in pounds: ");
             resultW = weightScan.nextDouble();
             weightScan.nextLine();
+            //can implement try->catch for parsing & exception handling...
             if (resultW < 0) {
                 System.out.println("You have to enter a positive number...");
             }
@@ -89,6 +81,7 @@ public class App {
             System.out.print("Enter your height in inches: ");
             resultH = heightScan.nextDouble();
             heightScan.nextLine();
+            //can implement try->catch for parsing & exception handling...
             if (resultH < 0) {
                 System.out.println("You have to enter a positive number...");
             }

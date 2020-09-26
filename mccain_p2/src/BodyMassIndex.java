@@ -1,26 +1,27 @@
+//class without parameters
 public class BodyMassIndex {
     public double BMIHeight;
     public double BMIWeight;
     public double BMICalculated;
     public String BMICategory;
+
+    //method with parameters
     public BodyMassIndex(double height, double weight) {
         //rounding
         height = Math.round(height * 100); //round height to 2 decimal places - part 1...
         height = height / 100;             //round height to 2 decimal places - part 2...
-
         weight = Math.round(weight * 100); //round weight same as height...
         weight = weight / 100;
-
         double bmi = (703 * weight) / (height * height); //703 * pounds for bmi calculation...
         bmi = Math.round(bmi * 100); //round bmi too...
         bmi = bmi / 100;
 
-        //assigning values
+        //assigning score within method
         this.BMIHeight = height;
         this.BMIWeight = weight;
         this.BMICalculated = bmi;
 
-        //category conditions
+        //assigning category within method
         if (bmi < 18.5) {
             this.BMICategory = "Underweight";
         }

@@ -1,38 +1,44 @@
-//class without parameters
 public class BodyMassIndex {
-    public double BMIHeight;
-    public double BMIWeight;
-    public double BMICalculated;
-    public String BMICategory;
+    double BMIHeight;
+    double BMIWeight;
+    double BMIScore;
+    String BMICategory;
 
-    //method with parameters
     public BodyMassIndex(double height, double weight) {
+        BMIHeight = height;
+        BMIWeight = weight;
+        BMIScore = getBMIScore(BMIHeight, BMIWeight);
+        BMICategory = getBMICategory(BMIScore);
+    }
+
+    public double getBMIScore(double height, double weight) {
         //rounding
-        height = Math.round(height * 100); //round height to 2 decimal places - part 1...
-        height = height / 100;             //round height to 2 decimal places - part 2...
-        weight = Math.round(weight * 100); //round weight same as height...
-        weight = weight / 100;
+        height = Math.round(height * 10); //round height to 1 decimal place - part 1...
+        height = height / 10;             //round height to 1 decimal place - part 2...
+        weight = Math.round(weight * 10); //round weight same as height...
+        weight = weight / 10;
         double bmi = (703 * weight) / (height * height); //703 * pounds for bmi calculation...
-        bmi = Math.round(bmi * 100); //round bmi too...
-        bmi = bmi / 100;
+        bmi = Math.round(bmi * 10); //round bmi too...
+        bmi = bmi / 10;
 
-        //assigning score within method
-        this.BMIHeight = height;
-        this.BMIWeight = weight;
-        this.BMICalculated = bmi;
+        return bmi;
+    }
 
+    public String getBMICategory(double bmi) {
         //assigning category within method
+        String result;
         if (bmi < 18.5) {
-            this.BMICategory = "Underweight";
+            result = "Underweight";
         }
         else if (bmi >= 18.5 && bmi <= 24.9) {
-            this.BMICategory = "Normal weight";
+            result = "Normal weight";
         }
         else if (bmi >= 25 && bmi <= 29.9) {
-            this.BMICategory = "Overweight";
+            result = "Overweight";
         }
         else {
-            this.BMICategory = "Obese";
+            result = "Obese";
         }
+        return result;
     }
 }

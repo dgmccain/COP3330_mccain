@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        //code here...
         ArrayList<BodyMassIndex> bmiData = new ArrayList<BodyMassIndex>();
 
         while (moreInput()) {
@@ -17,7 +16,7 @@ public class App {
             displayBmiInfo(bmi);
         }
 
-        displayBmiStatistics(bmiData);
+       displayBmiStatistics(bmiData);
     }
 
     //determine if there is more input...
@@ -43,7 +42,7 @@ public class App {
         double sum = 0;
         double average;
         for (int i = 0; i < bmiData.size(); i++) {
-            sum += bmiData.get(i).BMICalculated;
+            sum += bmiData.get(i).BMIScore;
         }
         average = sum / bmiData.size();
         average = Math.round(average * 100); //round average to 2 decimal places...
@@ -53,10 +52,8 @@ public class App {
 
     //print out current individual's info here...
     private static void displayBmiInfo(BodyMassIndex bmi) {
-        //System.out.println("Height: " + bmi.BMIHeight);
-        //System.out.println("Weight: " + bmi.BMIWeight);
-        System.out.println("BMI: " + bmi.BMICalculated);
-        System.out.println("Condition: " + bmi.BMICategory);
+        System.out.println("BMI: " + bmi.BMIScore);
+        System.out.println("Condition: " + bmi.BMIScore);
     }
 
     private static double getUserWeight() {

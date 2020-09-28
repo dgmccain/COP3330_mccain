@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;  //not currently used in App...
 import java.util.Scanner;
 
 public class App {
@@ -33,11 +32,11 @@ public class App {
                 default:
                     System.out.println("ERROR - you need to enter Y or N...");
                     moreInput();
-                    return true; //should not get called but including a return avoids error message...
+                    return true; //should not get called, but including a return avoids error message...
             }
     }
 
-    //loop to print out all info in bmi array...
+    //print out average bmi score info in bmi array...
     private static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiData) {
         double sum = 0;
         double average;
@@ -63,7 +62,6 @@ public class App {
             System.out.print("Enter your weight in pounds: ");
             resultW = weightScan.nextDouble();
             weightScan.nextLine();
-            //can implement try->catch for parsing & exception handling...
             if (resultW < 0) {
                 System.out.println("You have to enter a positive number...");
             }
@@ -78,7 +76,6 @@ public class App {
             System.out.print("Enter your height in inches: ");
             resultH = heightScan.nextDouble();
             heightScan.nextLine();
-            //can implement try->catch for parsing & exception handling...
             if (resultH < 0) {
                 System.out.println("You have to enter a positive number...");
             }

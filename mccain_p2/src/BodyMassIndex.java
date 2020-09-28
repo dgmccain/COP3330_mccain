@@ -11,6 +11,7 @@ public class BodyMassIndex {
         BMICategory = getBMICategory(BMIScore);
     }
 
+    //calculate bmi score from user input obtained in App class...
     public double getBMIScore(double height, double weight) {
         //rounding
         height = Math.round(height * 10); //round height to 1 decimal place - part 1...
@@ -24,8 +25,8 @@ public class BodyMassIndex {
         return bmi;
     }
 
+    //bmi uses data from height and weight to determine condition...
     public String getBMICategory(double bmi) {
-        //assigning category within method
         String result;
         if (bmi < 18.5) {
             result = "Underweight";

@@ -4,8 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BodyMassIndexTest {
 
     @Test
+    void TestBodyMassIndex() {
+        //test the entire bmi object...
+        BodyMassIndex bmiTest = new BodyMassIndex(70.5678, 140.000);
+        assertEquals(70.5678, bmiTest.BMIHeight); //rounding takes place only in BMIScore...
+        assertEquals(140.0, bmiTest.BMIWeight);
+        assertEquals(19.7, bmiTest.BMIScore);
+        assertEquals("Normal weight", bmiTest.BMICategory);
+    }
+
+    @Test
     void TestScore() {
-        //bmi score will round because bmi object is set to round all values to 2 decimal places...
+        //bmi score will round because bmi object is set to round all values to 1 decimal place...
         BodyMassIndex bmiTest = new BodyMassIndex(70.5678, 140.000);
         assertEquals(19.7, bmiTest.BMIScore);
     }
@@ -16,7 +26,6 @@ public class BodyMassIndexTest {
         assertEquals("Underweight", bmiTest.BMICategory);
     }
 
-    //TEST OTHER 3 CATEGORIES...
     @Test
     void TestCategory2() {
         BodyMassIndex bmiTest = new BodyMassIndex(70.3, 130);

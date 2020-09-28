@@ -45,15 +45,15 @@ public class App {
             sum += bmiData.get(i).BMIScore;
         }
         average = sum / bmiData.size();
-        average = Math.round(average * 100); //round average to 2 decimal places...
-        average = average / 100;
+        average = Math.round(average * 10); //round average to 1 decimal place...
+        average = average / 10;
         System.out.println("Average BMI of all users: " + average);
     }
 
     //print out current individual's info here...
     private static void displayBmiInfo(BodyMassIndex bmi) {
         System.out.println("BMI: " + bmi.BMIScore);
-        System.out.println("Condition: " + bmi.BMIScore);
+        System.out.println("Condition: " + bmi.BMICategory);
     }
 
     private static double getUserWeight() {

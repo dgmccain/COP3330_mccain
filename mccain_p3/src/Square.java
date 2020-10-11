@@ -1,13 +1,19 @@
 public class Square extends Shape2D {
-    public Square(int i) {
+
+    //constructor...
+    public Square(double num) {
         super();
-        void getName() {
-            String name = "square";
-            return name;
-        }
-        double getArea() {
-            double shapeArea = i;
-            return shapeArea;
-        }
+    }
+    //num is not stored in code because there are no class fields in Square or shape...
+
+    @Override
+    public String getName() {
+        String shapeName = "square";
+        return shapeName;
+    }
+
+    @Override
+    public double getArea() {
+        return 0;
     }
 }

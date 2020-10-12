@@ -8,14 +8,14 @@ public class Square extends Shape2D {
         sideLength = sideInput;
     }
 
-    //check to see if overriding is correct...
+    //Override superclass...
     @Override
     public String getName() {
-        return "square"; //returns name of shape...
+        return "square";
     }
 
     @Override
     public double getArea() {
-        return (sideLength * sideLength); //returns area of shape...
+        return (sideLength * sideLength);
     }
 }

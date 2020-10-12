@@ -11,14 +11,14 @@ public class Circle extends Shape2D {
         radius = radiusInput;
     }
 
-    //check to see if overriding is correct...
+    //Override superclass...
     @Override
     public String getName() {
-        return "circle"; //returns name of shape...
+        return "circle";
     }
 
     @Override
     public double getArea() {
-        return (pi * radius * radius); //returns area of shape...
+        return (pi * radius * radius);
     }
 }

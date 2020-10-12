@@ -10,14 +10,14 @@ public class Triangle extends Shape2D {
         height = heightInput;
     }
 
-    //check to see if overriding is correct...
+    //Override superclass...
     @Override
     public String getName() {
-        return "triangle"; //returns name of shape...
+        return "triangle";
     }
 
     @Override
     public double getArea() {
-        return ((base * height) / 2); //returns area of shape...
+        return ((base * height) / 2);
     }
 }

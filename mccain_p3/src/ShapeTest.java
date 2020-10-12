@@ -91,36 +91,34 @@ class ShapeTest {
         assertEquals(0.13, shape.getVolume(), 0.01);
     }
 
-    /*
     //Pyramid Tests...
     @Test
     public void TestPyramidName() {
-        Shape shape = new Cube(100);
-        assertEquals("cube", shape.getName());
+        Shape shape = new Pyramid(10, 10, 10);
+        assertEquals("pyramid", shape.getName());
     }
 
     @Test
     public void TestPyramidArea() {
-        Shape3D shape = new Cube(10);
-        assertEquals(600, shape.getArea());
+        Shape3D shape = new Pyramid(10, 10, 10);
+        assertEquals(323.61, shape.getArea(), 0.01);
     }
 
     @Test
     public void TestPyramidArea2() {
-        Shape shape = new Cube(0.5);
-        assertEquals(1.5, shape.getArea());
+        Shape3D shape = new Pyramid(5, 10, 15);
+        assertEquals(281.13, shape.getArea(), 0.01);
     }
 
     @Test
     public void TestPyramidVolume() {
-        Shape3D shape = new Cube(10);
-        assertEquals(1000, shape.getVolume());
+        Shape3D shape = new Pyramid(10, 10, 10);
+        assertEquals(333.33, shape.getVolume(), 0.01);
     }
 
     @Test
     public void TestPyramidVolume2() {
-        Shape3D shape = new Cube(0.5);
-        assertEquals(0.13, shape.getVolume(), 0.01);
+        Shape3D shape = new Pyramid(1.5, 0.5, 2.5);
+        assertEquals(0.63, shape.getVolume(), 0.01);
     }
-    */
 }

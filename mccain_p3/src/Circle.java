@@ -2,12 +2,12 @@ import java.lang.Math.*;
 
 public class Circle extends Shape2D {
     //private variables of Circle...
-    private final double pi = Math.PI; //Math.PI is more precise than just 3.14...
+    private final double pi = Math.PI;
     private final double radius;
 
     //constructor...
     public Circle(double radiusInput) {
-        //store inputs to private variables within Triangle...
+        //store input to private variables within Circle...
         radius = radiusInput;
     }
 
@@ -19,7 +19,6 @@ public class Circle extends Shape2D {
 
     @Override
     public double getArea() {
-        double area = (pi * radius * radius);
-        return area; //returns area of shape...
+        return (pi * radius * radius); //returns area of shape...
     }
 }

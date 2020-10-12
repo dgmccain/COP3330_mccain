@@ -1,19 +1,21 @@
 public class Square extends Shape2D {
 
-    //constructor...
-    public Square(double num) {
-        super();
-    }
-    //num is not stored in code because there are no class fields in Square or shape...
+    //private variables of Square...
+    private final double sideLength;
 
+    //constructor...
+    public Square(double sideInput) {
+        sideLength = sideInput; //stores test case input as private variable within Square class...
+    }
+
+    //check to see if overriding is correct...
     @Override
     public String getName() {
-        String shapeName = "square";
-        return shapeName;
+        return "square"; //returns name of shape...
     }
 
     @Override
     public double getArea() {
-        return 0;
+        return (sideLength * sideLength); //returns area of shape...
     }
 }

@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class App {
 
     public static void displayMainMenu() {
+        System.out.print(System.lineSeparator());
         System.out.println("           - Main Menu -           ");
         System.out.println("***********************************");
         System.out.println("* 1. create a new task list       *");
@@ -38,26 +39,126 @@ public class App {
         return choice;
     }
 
-    public static void branchFromMainMenu(String choice) {
-        switch(choice) {
-            case "1":
-                //create new task list...
+    public static void displayCreateListMenu() {
+        System.out.print(System.lineSeparator());
+        System.out.println("       - Create List Menu -       ");
+        System.out.println("**********************************");
+        System.out.println("* 1. view current task list      *");
+        System.out.println("* 2. add a task                  *");
+        System.out.println("* 3. edit a task                 *");
+        System.out.println("* 4. delete a task               *");
+        System.out.println("* 5. set a task as complete      *");
+        System.out.println("* 6. set a task as incomplete    *");
+        System.out.println("* 7. save current task list      *");
+        System.out.println("* 8. quit to main menu           *");
+        System.out.println("**********************************");
+    }
 
-                //create a temporary variable populated from a function...
+    public static String createListMenuInput() {
+        String choice = "";
+        Scanner choiceInput = new Scanner(System.in);
+        boolean flag = true;
+
+        //loop until a valid choice is made...
+        while (flag) {
+            System.out.print("\nEnter your choice: ");
+            choice = choiceInput.nextLine();
+
+            //exception handling...
+            try {
+                //check if input is 1-8...
+                if (choice.matches("[1-8]")) {
+                    flag = false;
+                } else {
+                    throw new InvalidChoiceException();
+                }
+            } catch (InvalidChoiceException e) {
+                System.out.println("You must choose between the 8 menu options...");
+            }
+        }
+
+        return choice;
+    }
+
+    //this function originally returned a boolean, but could not be accessed
+    //from within main function because of nested function looping...
+    public static boolean determineListMenuOption(String choice) {
+        boolean shouldGoToMainMenu = false;
+        switch(choice) {
+            case "1": //view current task list...
+                TaskList.printTasks();
+                break;
+            case "2": //add task item to task list...
+                //create a temporary task item populated from a function...
                 TaskItem tempTaskItem = getTaskItemFromUser();
 
                 //store task item in task array list...
-                TaskList.getTasks(tempTaskItem);
+                TaskList.addTasks(tempTaskItem);
+                break;
+            case "3": //edit a task item...
+                System.out.println("case 3");
+                break;
+            case "4": //delete a task item...
+                TaskList.deleteTask();
+                break;
+            case "5": //mark a task item...
+                System.out.println("case 5");
+                break;
+            case "6": //unmark a task item...
+                System.out.println("case 6");
+                break;
+            case "7": //save current task list...
+                System.out.println("case 7");
+                break;
+            case "8": //return to main menu...
+                shouldGoToMainMenu = true;
+                break;
+            default:
+                System.out.println("Error occurred when trying to determine your choice...");
+        }
+
+        return shouldGoToMainMenu;
+    }
+
+    public static String getFileName() {
+        String fileName;
+        Scanner fileNameInput = new Scanner(System.in);
+
+        System.out.print("Enter the name of the file you want to load: ");
+        fileName = fileNameInput.nextLine();
+
+        //exception handling goes here, along with checking if file exists...
+
+        return fileName;
+    }
+
+    public static boolean branchFromMainMenu(String mainMenuChoice) {
+        String createListChoice;
+        boolean shouldGoToMainMenu = false;
+        switch(mainMenuChoice) {
+            case "1":
+                //open create list menu...
+                displayCreateListMenu();
+                createListChoice = createListMenuInput();
+                shouldGoToMainMenu = determineListMenuOption(createListChoice);
                 break;
             case "2":
                 //load existing task list...
+                //String||File tempFileName = getFileName();
+                getFileName();
+
+                //main menu SHOULD NOT be called, instead go to
+                //createListMenu after loading in the file data...
+                shouldGoToMainMenu = true;
                 break;
             case "3":
-                //quit...
+                //quit handled in App's main function before this function is called...
                 break;
             default:
                 System.out.println("Error occurred when determining choice...");
         }
+
+        return shouldGoToMainMenu;
     }
 
     public static String getTitle() {
@@ -134,36 +235,6 @@ public class App {
         return new TaskItem(tempTitle, tempDescription, tempDueDate);
     }
 
-    public static boolean getQuit() {
-        Scanner quitInput = new Scanner(System.in);
-        String response;
-        boolean flag = true;
-        boolean result = false; //initialization for result can be true or false...
-
-        //loop until user determines whether or not to quit the program...
-        while (flag) {
-            System.out.print("Would you like to continue? Enter Y/N: ");
-            response = quitInput.next();
-
-            //exception handling...
-            try {
-                if (response.matches("Y") || response.matches("y")) {
-                    flag = false;
-                    result = false;
-                } else if (response.matches("N") || response.matches("n")) {
-                    flag = false;
-                    result = true;
-                } else {
-                    throw new InvalidQuitKeyException();
-                }
-            } catch (InvalidQuitKeyException e) {
-                flag = true;
-                System.out.println("You must enter Y/N...");
-            }
-        }
-        return result;
-    }
-
     //the following classes are used for exception handling...
     static class InvalidTitleException extends IllegalArgumentException {
         public InvalidTitleException() {
@@ -173,12 +244,6 @@ public class App {
 
     static class InvalidDueDateException extends IllegalArgumentException {
         public InvalidDueDateException() {
-            super();
-        }
-    }
-
-    static class InvalidQuitKeyException extends IllegalArgumentException {
-        public InvalidQuitKeyException() {
             super();
         }
     }
@@ -203,14 +268,17 @@ public class App {
             }
 
             //determine what choice was made in the main menu...
-            branchFromMainMenu(menuChoice);
+            if (menuChoice.matches("3")) {
+                quitKey = true;
+            }
+            else {
+                mainMenuOpen = branchFromMainMenu(menuChoice);
+            }
 
-            //exit program if quitKey is Y or y...
-            /*MODIFY to include a shouldQuit of boolean type for menu choices, and
-              change quitKey to be a continueKey instead...
-            */
-            quitKey = getQuit();
         }
+
+        System.out.println("Program closing...");
+        //store to txt file instead of print...
         TaskList.printTasks();
     }
 }

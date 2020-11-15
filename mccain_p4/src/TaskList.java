@@ -15,8 +15,6 @@ public class TaskList {
         for (TaskItem taskItem : taskList) {
             //include marked/unmarked status before title...
             System.out.println(taskItem.title +": " + taskItem.description + " [" + taskItem.dueDate + "]");
-            //end on newline regardless of OS...
-            System.out.print(System.lineSeparator());
         }
     }
 }

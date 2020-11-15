@@ -38,6 +38,28 @@ public class App {
         return choice;
     }
 
+    public static void branchFromMainMenu(String choice) {
+        switch(choice) {
+            case "1":
+                //create new task list...
+
+                //create a temporary variable populated from a function...
+                TaskItem tempTaskItem = getTaskItemFromUser();
+
+                //store task item in task array list...
+                TaskList.getTasks(tempTaskItem);
+                break;
+            case "2":
+                //load existing task list...
+                break;
+            case "3":
+                //quit...
+                break;
+            default:
+                System.out.println("Error occurred when determining choice...");
+        }
+    }
+
     public static String getTitle() {
         String tempTitle = ""; //initialize to essentially contain 0 chars...
         Scanner titleInput = new Scanner(System.in);
@@ -168,8 +190,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-        boolean quitKey = false; //initialize loop at start...
-        String menuChoice;
+        boolean quitKey = false;
+        String menuChoice = null;
         boolean mainMenuOpen = true;
 
         while (!quitKey) {
@@ -180,15 +202,13 @@ public class App {
                 mainMenuOpen = false; //close after user choice is made...
             }
 
-            //pass the menuChoice to a function which contains a switch(menuChoice) case
-            //to determine which sub-menu the program should branch off to next...
+            //determine what choice was made in the main menu...
+            branchFromMainMenu(menuChoice);
 
-            //create a temporary variable populated from a function...
-            TaskItem tempTaskItem = getTaskItemFromUser();
-
-            //store task item in task array list...
-            TaskList.getTasks(tempTaskItem);
-
+            //exit program if quitKey is Y or y...
+            /*MODIFY to include a shouldQuit of boolean type for menu choices, and
+              change quitKey to be a continueKey instead...
+            */
             quitKey = getQuit();
         }
         TaskList.printTasks();
@@ -202,6 +222,7 @@ public class App {
     =========================================================================
     *console input exception handling*
     modify exception handling of inputting a title and due date
+    - the dueDate months need to range from 01 to 12, instead of 00 to 19
     - the dueDate days need to range between 01 and 31 according to month
     =========================================================================
     *file IO*

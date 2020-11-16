@@ -1,15 +1,16 @@
+import java.io.File;
 import java.util.Scanner;
 
 public class App {
 
     public static void displayMainMenu() {
         System.out.print(System.lineSeparator());
-        System.out.println("           - Main Menu -           ");
-        System.out.println("***********************************");
-        System.out.println("* 1. create a new task list       *");
-        System.out.println("* 2. load an existing task list   *");
-        System.out.println("* 3. quit the program             *");
-        System.out.println("***********************************");
+        System.out.println("                     - Main Menu -                     ");
+        System.out.println("*******************************************************");
+        System.out.println("* 1. load an existing task list                       *");
+        System.out.println("* 2. view loaded task list or create a new task list  *");
+        System.out.println("* 3. quit the program                                 *");
+        System.out.println("*******************************************************");
     }
 
     public static String mainMenuInput() {
@@ -41,7 +42,7 @@ public class App {
 
     public static void displayCreateListMenu() {
         System.out.print(System.lineSeparator());
-        System.out.println("       - Create List Menu -       ");
+        System.out.println("        - Task List Menu -        ");
         System.out.println("**********************************");
         System.out.println("* 1. view current task list      *");
         System.out.println("* 2. add a task                  *");
@@ -80,8 +81,6 @@ public class App {
         return choice;
     }
 
-    //this function originally returned a boolean, but could not be accessed
-    //from within main function because of nested function looping...
     public static boolean determineListMenuOption(String choice) {
         boolean shouldGoToMainMenu = false;
         switch(choice) {
@@ -107,8 +106,8 @@ public class App {
             case "6": //unmark a task item...
                 System.out.println("case 6");
                 break;
-            case "7": //save current task list...
-                System.out.println("case 7");
+            case "7": //save current task list to txt file...
+                TaskList.storeTasks();
                 break;
             case "8": //return to main menu...
                 shouldGoToMainMenu = true;
@@ -127,52 +126,53 @@ public class App {
         System.out.print("Enter the name of the file you want to load: ");
         fileName = fileNameInput.nextLine();
 
-        //exception handling goes here, along with checking if file exists...
-
         return fileName;
     }
 
-    public static boolean fileNameIsValid(String fileName) {
-        boolean result;
-        //check if fileName matches a txt file...
-        //if (fileName.matches an existing txt file) {
-        result = true;
-        /*
-        }
-        else {
-            //inform user that there was no matching file found...
-            System.out.println("That file name does not exist." +
-                " Check if you entered the file extension correctly...");
-            result = false;
-        }
-        */
-        return result;
+    public static boolean doesFileExist(String fileName) {
+        File inputFile = new File(fileName);
+
+        return inputFile.exists();
     }
 
     public static boolean branchFromMainMenu(String mainMenuChoice) {
         String createListChoice;
         boolean shouldGoToMainMenu = false;
+
+        //NOTE: Unconventional switch case was used to
+        //streamline handling file loading sequence...
         switch(mainMenuChoice) {
             case "1":
+                //load existing task list...
+                String tempFileName = getFileName();
+                //check if the file entered exists...
+                boolean doesExist = doesFileExist(tempFileName);
+
+                if (doesExist) {
+                    //load file contents into list...
+                    TaskList.loadTasks(tempFileName);
+                    //if file load was successful then main menu should still be called...
+                    shouldGoToMainMenu = true;
+                }
+                else {
+                    //return to main menu...
+                    System.out.println("The file name you entered does not exist...");
+                    shouldGoToMainMenu = true;
+                    break;
+                }
+                break;
+                //case 1 should only break if there is an error reading the file name. The code
+                //should then bring up the main menu again. Otherwise, new menu functions from
+                //case 2 should be invoked using the data that was loaded from the txt file...
+            case "2":
                 //open create list menu...
                 displayCreateListMenu();
                 createListChoice = createListMenuInput();
                 shouldGoToMainMenu = determineListMenuOption(createListChoice);
                 break;
-            case "2":
-                //load existing task list...
-                //String||File tempFileName = getFileName();
-                getFileName();
-
-                //if file is found then go to case 1 using txt file contents, but
-                //if txt file is not found then return to main menu...
-
-                //main menu SHOULD NOT be called, instead go to
-                //createListMenu after loading in the file data...
-                shouldGoToMainMenu = true;
-                break;
             case "3":
-                //quit handled in App's main function before this function is called...
+                //quitting the program is handled in the App's main function
+                //before this function is ever called...
                 break;
             default:
                 System.out.println("Error occurred when determining choice...");
@@ -237,8 +237,7 @@ public class App {
                 }
             } catch (InvalidDueDateException e) {
                 //flag remains true so while loop continues...
-                System.out.println("You entered an invalid date." +
-                        " Make sure to include - between year, month, and day...");
+                System.out.println("You entered an invalid date. Try again...");
             }
         }
 
@@ -261,19 +260,18 @@ public class App {
             super();
         }
     }
-
     static class InvalidDueDateException extends IllegalArgumentException {
         public InvalidDueDateException() {
             super();
         }
     }
-
     static class InvalidChoiceException extends IllegalArgumentException {
         public InvalidChoiceException() {
             super();
         }
     }
 
+    //main method...
     public static void main(String[] args) {
         boolean quitKey = false;
         String menuChoice = null;
@@ -298,8 +296,6 @@ public class App {
         }
 
         System.out.println("Program closing...");
-        //store to txt file instead of print...
-        TaskList.printTasks();
     }
 }
 
@@ -314,18 +310,9 @@ public class App {
     - the dueDate days need to range between 01 and 31 according to month
     =========================================================================
     *file IO*
-    write TaskList (array list within the class) to txt file for output
-    readable input txt file needs to be abl to store text within TaskList
+    readable input txt file needs to be able to store text within TaskList
     - (array list). Explained another way on next line...
     previously stored txt files should be able to load as input for TaskList
-    - they should then be able to be modified within the program
-    modifications for adding, editing, and removing task items should be 3
-    - separate cases within the menu
-    =========================================================================
-    *update menu functionality*
-    will need to include a switch case for the menu
-    once switch case is added, quitKey needs to be changed to int value that
-    -corresponds to the "quit program" option from the new/updated menu
     =========================================================================
     *more updates to menu options*
     task items within a list need to have the option to be marked as completed

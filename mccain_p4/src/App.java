@@ -96,7 +96,7 @@ public class App {
                 TaskList.addTasks(tempTaskItem);
                 break;
             case "3": //edit a task item...
-                System.out.println("case 3");
+                TaskList.editTasks();
                 break;
             case "4": //delete a task item...
                 TaskList.deleteTask();
@@ -132,6 +132,23 @@ public class App {
         return fileName;
     }
 
+    public static boolean fileNameIsValid(String fileName) {
+        boolean result;
+        //check if fileName matches a txt file...
+        //if (fileName.matches an existing txt file) {
+        result = true;
+        /*
+        }
+        else {
+            //inform user that there was no matching file found...
+            System.out.println("That file name does not exist." +
+                " Check if you entered the file extension correctly...");
+            result = false;
+        }
+        */
+        return result;
+    }
+
     public static boolean branchFromMainMenu(String mainMenuChoice) {
         String createListChoice;
         boolean shouldGoToMainMenu = false;
@@ -146,6 +163,9 @@ public class App {
                 //load existing task list...
                 //String||File tempFileName = getFileName();
                 getFileName();
+
+                //if file is found then go to case 1 using txt file contents, but
+                //if txt file is not found then return to main menu...
 
                 //main menu SHOULD NOT be called, instead go to
                 //createListMenu after loading in the file data...

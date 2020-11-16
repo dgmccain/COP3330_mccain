@@ -83,37 +83,21 @@ public class App {
 
     public static boolean determineListMenuOption(String choice) {
         boolean shouldGoToMainMenu = false;
-        switch(choice) {
-            case "1": //view current task list...
-                TaskList.printTasks();
-                break;
-            case "2": //add task item to task list...
+        switch (choice) {
+            case "1" -> TaskList.printTasks(); //view current task list...
+            case "2" -> { //add task item to task list...
                 //create a temporary task item populated from a function...
-                TaskItem tempTaskItem = getTaskItemFromUser();
-
+                TaskItem tempTaskItem = setTaskItemFromUser();
                 //store task item in task array list...
                 TaskList.addTasks(tempTaskItem);
-                break;
-            case "3": //edit a task item...
-                TaskList.editTasks();
-                break;
-            case "4": //delete a task item...
-                TaskList.deleteTask();
-                break;
-            case "5": //mark a task item...
-                System.out.println("case 5");
-                break;
-            case "6": //unmark a task item...
-                System.out.println("case 6");
-                break;
-            case "7": //save current task list to txt file...
-                TaskList.storeTasks();
-                break;
-            case "8": //return to main menu...
-                shouldGoToMainMenu = true;
-                break;
-            default:
-                System.out.println("Error occurred when trying to determine your choice...");
+            }
+            case "3" -> TaskList.editTasks(); //edit a task item...
+            case "4" -> TaskList.deleteTask(); //delete a task item...
+            case "5" -> System.out.println("case 5"); //mark a task item...
+            case "6" -> System.out.println("case 6"); //unmark a task item...
+            case "7" -> TaskList.storeTasks(); //save current task list to txt file...
+            case "8" -> shouldGoToMainMenu = true; //return to main menu...
+            default -> System.out.println("Error occurred when trying to determine your choice...");
         }
 
         return shouldGoToMainMenu;
@@ -181,74 +165,11 @@ public class App {
         return shouldGoToMainMenu;
     }
 
-    public static String getTitle() {
-        String tempTitle = ""; //initialize to essentially contain 0 chars...
-        Scanner titleInput = new Scanner(System.in);
-
-        //loop ensures that title will contain at least 1 char...
-        while (tempTitle.matches("")) {
-            System.out.print("Enter a Title: ");
-            tempTitle = titleInput.nextLine();
-
-            //exception handling...
-            try {
-                if (tempTitle.matches("")) {
-                    throw new InvalidTitleException();
-                }
-            } catch (InvalidTitleException e) {
-                System.out.println("You need to enter a title...");
-            }
-        }
-
-        return tempTitle;
-    }
-
-    public static String getDescription() {
-        String tempDescription; //description can be left blank...
-        Scanner descriptionInput = new Scanner(System.in);
-
-        //no need for exception handling since description can be left
-        //blank and/or edited with the program...
-        System.out.print("Enter a Description: ");
-        tempDescription = descriptionInput.nextLine();
-
-        return tempDescription;
-    }
-
-    public static String getDueDate() {
-        String tempDueDate = "";
-        Scanner dueDateInput = new Scanner(System.in);
-        boolean flag = true;
-
-        //loop until valid due date is entered...
-        while (flag) {
-            System.out.print("Enter a Due Date [YYYY-MM-DD] format: ");
-            tempDueDate = dueDateInput.nextLine();
-
-            //exception handling...
-            //current issue: months can range from 0-19, and days can range from 0-39...
-            try {
-                if (tempDueDate.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
-                    flag = false;
-                }
-                else {
-                    //flag remains true so while loop continues...
-                    throw new InvalidDueDateException();
-                }
-            } catch (InvalidDueDateException e) {
-                //flag remains true so while loop continues...
-                System.out.println("You entered an invalid date. Try again...");
-            }
-        }
-
-        return tempDueDate;
-    }
-
-    public static TaskItem getTaskItemFromUser() {
+    public static TaskItem setTaskItemFromUser() {
         //get user input...
-        String tempTitle = getTitle();
-        String tempDescription = getDescription();
-        String tempDueDate = getDueDate();
+        String tempTitle = TaskItem.setTitle();
+        String tempDescription = TaskItem.setDescription();
+        String tempDueDate = TaskItem.setDueDate();
 
         //create task item from the above variables, then return the object...
         return new TaskItem(tempTitle, tempDescription, tempDueDate);

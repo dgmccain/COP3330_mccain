@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class TaskList {
     //NOTE: variable and functions must be declared static to use from main...
-    private static ArrayList<TaskItem> taskList = new ArrayList<>();
+    private static final ArrayList<TaskItem> taskList = new ArrayList<>();
 
     //default constructor...
     public TaskList() {
@@ -68,9 +68,12 @@ public class TaskList {
         //edit task after ensuring the value is within bounds...
         if (taskNum >= 0 && taskNum <= taskList.size()) {
             System.out.println("Enter new info...");
-            taskList.get(taskNum).title = App.getTitle();
-            taskList.get(taskNum).description = App.getDescription();
-            taskList.get(taskNum).dueDate = App.getDueDate();
+            App.setTaskItemFromUser();
+            /*
+            taskList.get(taskNum).title = TaskItem.getTitle();
+            taskList.get(taskNum).description = TaskItem.getDescription();
+            taskList.get(taskNum).dueDate = TaskItem.getDueDate();
+            */
         } else {
             System.out.println("The task number you entered does not exist...");
         }
@@ -100,27 +103,62 @@ public class TaskList {
     public static void storeTasks() {
         Scanner fileNameInput = new Scanner(System.in);
         String fileName;
+        boolean shouldContinue = true;
 
         System.out.print("Enter a file name to save your list to: ");
         fileName = fileNameInput.nextLine();
 
-        //create a new txt file named from above user input. The
-        //txt file should contain data from the list elements...
-        try (Formatter output = new Formatter(fileName)) {
-            for (TaskItem taskItem : taskList) {
-                output.format("%s;%s;%s;%n", taskItem.getTitle(), taskItem.getDescription(),
-                        taskItem.getDueDate());
-            }
-            //let user know that the file was saved successfully...
-            System.out.println("You saved " + fileName + " successfully!");
+        //check if file name already exists...
+        if (App.doesFileExist(fileName)) {
+            Scanner overwriteInput = new Scanner(System.in);
+            String response;
 
-            //these catches should not typically be triggered...
-        } catch (FileNotFoundException ex) {
-            System.out.println("The file name you entered does not exist...");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("That file already exists. Would you like to permanently overwrite it?");
+            System.out.print("Enter Y or y to continue: ");
+            response = overwriteInput.nextLine();
+
+            //confirm that the user wants to overwrite the file...
+            if (response.equalsIgnoreCase("y")) {
+
+                //create file object for deletion...
+                File oldFile = new File(fileName);
+                //delete the file object to clear all of its contents before overwriting...
+                if (oldFile.delete()) {
+                    System.out.println("The file was successfully overwritten");
+                }
+                else {
+                    System.out.println("There was an issue overwriting the file...");
+                }
+
+                //continue to get new file contents...
+                shouldContinue = true;
+            }
+            //do not continue if the user does not want to overwrite the file...
+            else {
+                System.out.println(fileName + " was not overwritten...");
+                shouldContinue = false;
+            }
         }
 
+        if (shouldContinue) {
+            //create a new txt file from above user input. The
+            //txt file should contain data from the list elements...
+            try (Formatter output = new Formatter(fileName)) {
+                for (TaskItem taskItem : taskList) {
+                    output.format("%s;%s;%s;%n", taskItem.getTitle(), taskItem.getDescription(),
+                            taskItem.getDueDate());
+                }
+                //let user know that the file was saved successfully...
+                System.out.println("You saved " + fileName + " successfully!");
+
+                //these catches should not typically be triggered...
+            } catch (FileNotFoundException ex) {
+                System.out.println("The file name you entered does not exist...");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        //do nothing if the user user does not want to overwrite the file...
     }
 
     //load txt file contents to list...

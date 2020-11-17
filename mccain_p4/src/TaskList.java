@@ -5,7 +5,7 @@ import java.util.Formatter;
 import java.util.Scanner;
 
 public class TaskList {
-    private ArrayList<TaskItem> taskList = new ArrayList<>();
+    private final ArrayList<TaskItem> taskList = new ArrayList<>();
 
     //default constructor...
     public TaskList() {
@@ -38,6 +38,7 @@ public class TaskList {
 
     //print array list elements...
     public void printTasks(TaskList tempList) {
+        //tempList included for test cases...
         String mark = "***";
 
         //taskList is only accessible from within class TaskList...
@@ -59,6 +60,7 @@ public class TaskList {
         taskList.add(tempTask);
     }
 
+    //nested function that contains <getIntFromUser>...
     public int getTaskItemNumFromUser(String msg) {
         int taskNum;
 
@@ -166,8 +168,8 @@ public class TaskList {
             //txt file should contain data from the list elements...
             try (Formatter output = new Formatter(fileName)) {
                 for (TaskItem taskItem : taskList) {
-                    output.format("%s;%s;%s;%n", taskItem.getTitle(), taskItem.getDescription(),
-                            taskItem.getDueDate());
+                    output.format("%s;%s;%s;%s;%n", taskItem.getStatus(), taskItem.getTitle(),
+                            taskItem.getDescription(), taskItem.getDueDate());
                 }
                 //let user know that the file was saved successfully...
                 System.out.println("You saved " + fileName + " successfully!");
@@ -185,9 +187,11 @@ public class TaskList {
 
     //load txt file contents to list...
     public void loadTasks(String fileName) {
+        String lineStatus;
         String lineTitle;
         String lineDescription;
         String lineDueDate;
+        boolean actualStatus;
 
         //start by deleting the current taskList before storing the txt data...
         for (int i = taskList.size(); i > 0; i--) {
@@ -203,6 +207,8 @@ public class TaskList {
                 //delimiter is what separates the object variables on the same line...
                 fileScanner.useDelimiter(";");
 
+                //read status...
+                lineStatus = fileScanner.next();
                 //read title...
                 lineTitle = fileScanner.next();
                 //read description...
@@ -213,8 +219,12 @@ public class TaskList {
                 //buffer the next line input...
                 fileScanner.nextLine();
 
+
+                //returns bool value of whether lineStatus == true...
+                actualStatus = lineStatus.matches("true");
+
                 //store as new task item...
-                TaskItem tempItem = new TaskItem(lineTitle, lineDescription, lineDueDate);
+                TaskItem tempItem = new TaskItem(actualStatus, lineTitle, lineDescription, lineDueDate);
                 //store task item in list...
                 taskList.add(tempItem);
             }
@@ -229,6 +239,32 @@ public class TaskList {
 
     //return size of the array list...
     public int getListSize(TaskList tempList) {
+        //used exclusively for test case to serve as temList.size() function. This is
+        //because size() is not equally easy to call from within test case classes...
         return this.taskList.size();
+    }
+
+    public void setStatus(String msg, String status, TaskList currentTaskList) {
+        int taskNum;
+        String tempTitle;
+        String tempDescription;
+        String tempDueDate;
+        boolean actualStatus = (status.matches("true"));
+
+        taskNum = getTaskItemNumFromUser(msg);
+
+        if (taskNum >= 0 && taskNum <= taskList.size()) {
+            tempTitle = this.taskList.get(taskNum).getTitle();
+            tempDescription = this.taskList.get(taskNum).getDescription();
+            tempDueDate = this.taskList.get(taskNum).getDueDate();
+
+            //create a new task item with updated status...
+            TaskItem tempTaskItem = new TaskItem(actualStatus, tempTitle, tempDescription, tempDueDate);
+
+            //store the new task item in the list at element of old item...
+            this.taskList.set(taskNum, tempTaskItem);
+        } else {
+            System.out.println("The task number you entered does not exist...");
+        }
     }
 }

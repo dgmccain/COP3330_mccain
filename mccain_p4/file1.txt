@@ -1,3 +1,2 @@
-title1;desc1;2020-01-01;
-title2;desc2;2020-02-02;
-title3;desc3;2020-03-03;
+true;title1;desc1;2020-01-01;
+false;title2;desc2;2020-02-02;

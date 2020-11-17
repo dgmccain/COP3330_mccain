@@ -4,8 +4,17 @@ public class TaskItem {
     private String dueDate;
     private boolean status;
 
-    //CONSTRUCTOR
+    //CONSTRUCTORS
+    //set default status to false if not given...
     public TaskItem(String title, String description, String dueDate) {
+        new TaskItem(false, title, description, dueDate);
+    }
+
+    //main constructor...
+    public TaskItem(boolean status, String title, String description, String dueDate) {
+        //if status == true, then marked...
+        this.status = status;
+
         //exception handling...
         try {
             if (isTitleValid(title)) {

@@ -11,7 +11,7 @@ class TaskListTest {
     @Test
     public void TestPrintTasks() {
         TaskList testList = new TaskList();
-        TaskItem testItem = new TaskItem("title", "description", "2020-01-01");
+        TaskItem testItem = new TaskItem(false,"title", "description", "2020-01-01");
 
         testList.addTasks(testItem);
         testList.printTasks(testList);
@@ -21,7 +21,7 @@ class TaskListTest {
     @Test
     public void TestAddToList() {
         TaskList testList = new TaskList();
-        TaskItem testItem = new TaskItem("title", "description", "2020-01-01");
+        TaskItem testItem = new TaskItem(false,"title", "description", "2020-01-01");
 
         testList.addTasks(testItem);
         assertEquals(1, testList.getListSize(testList));
@@ -38,9 +38,9 @@ class TaskListTest {
         //the test breaks because user input is required...
         TaskList testList = new TaskList();
 
-        TaskItem testItem1 = new TaskItem("title1", "description1", "2020-01-01");
+        TaskItem testItem1 = new TaskItem(false,"title1", "description1", "2020-01-01");
         testList.addTasks(testItem1);
-        TaskItem testItem2 = new TaskItem("title2", "description2", "2020-02-02");
+        TaskItem testItem2 = new TaskItem(false,"title2", "description2", "2020-02-02");
         testList.addTasks(testItem2);
 
         //testList.editTasks(testList);
@@ -75,7 +75,7 @@ class TaskListTest {
     @Test
     public void TestGettingTaskItemTitleFailsWithInvalidIndex() {
         TaskList testList = new TaskList();
-        TaskItem testItem = new TaskItem("title", "description", "2020-01-01");
+        TaskItem testItem = new TaskItem(false,"title", "description", "2020-01-01");
 
         testList.addTasks(testItem);
 

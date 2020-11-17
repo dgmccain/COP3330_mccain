@@ -1,89 +1,110 @@
-import java.util.Scanner;
-
 public class TaskItem {
-    //variables need to be protected to use within TaskList.printTasks...
-    protected String title;
-    protected String description;
-    protected String dueDate;
+    private String title;
+    private String description;
+    private String dueDate;
+    private boolean status;
 
+    //CONSTRUCTOR
     public TaskItem(String title, String description, String dueDate) {
-        this.title = title;
+        //exception handling...
+        try {
+            if (isTitleValid(title)) {
+                this.title = title;
+            }
+            else {
+                throw new IllegalArgumentException();
+            }
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("You must enter a title...");
+        }
+
+        //description does not need exception handling...
         this.description = description;
-        this.dueDate = dueDate;
-    }
 
-    public static String setTitle() {
-        String tempTitle = ""; //initialize to essentially contain 0 chars...
-        Scanner titleInput = new Scanner(System.in);
-
-        //loop ensures that title will contain at least 1 char...
-        while (tempTitle.matches("")) {
-            System.out.print("Enter a Title: ");
-            tempTitle = titleInput.nextLine();
-
-            //exception handling...
-            try {
-                if (tempTitle.matches("")) {
-                    throw new App.InvalidTitleException();
-                }
-            } catch (App.InvalidTitleException e) {
-                System.out.println("You need to enter a title...");
+        //exception handling...
+        try {
+            if (isDueDateValid(dueDate)) {
+                this.dueDate = dueDate;
+            } else {
+                throw new IllegalArgumentException();
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println("You must enter a valid date...");
         }
-
-        return tempTitle;
     }
 
+    //TITLE
+    public boolean isTitleValid(String title) {
+        //check if title is empty...
+        return !title.matches("");
+    }
+    public void setTitle(String title){
+        if(isTitleValid(title))
+            this.title = title;
+        else
+            throw new IllegalArgumentException("You must enter a title...");
+    }
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
-    public static String setDescription() {
-        String tempDescription; //description can be left blank...
-        Scanner descriptionInput = new Scanner(System.in);
-
-        //no need for exception handling since description can be left
-        //blank and/or edited with the program...
-        System.out.print("Enter a Description: ");
-        tempDescription = descriptionInput.nextLine();
-
-        return tempDescription;
+    //DESCRIPTION
+    public void setDescription(String description) {
+        this.description = description;
     }
-
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
-    public static String setDueDate() {
-        String tempDueDate = "";
-        Scanner dueDateInput = new Scanner(System.in);
-        boolean flag = true;
-
-        //loop until valid due date is entered...
-        while (flag) {
-            System.out.print("Enter a Due Date [YYYY-MM-DD] format: ");
-            tempDueDate = dueDateInput.nextLine();
-
-            //exception handling...
-            //current issue: months can range from 0-19, and days can range from 0-39...
-            try {
-                if (tempDueDate.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
-                    flag = false;
-                }
-                else {
-                    //flag remains true so while loop continues...
-                    throw new App.InvalidDueDateException();
-                }
-            } catch (App.InvalidDueDateException e) {
-                //flag remains true so while loop continues...
-                System.out.println("You entered an invalid date. Try again...");
+    //DUE DATE
+    public boolean isDueDateValid(String dd) {
+        //check if due date match yyyy-MM-dd format...
+        //if statements ensure that months are 01-12 and days are 01-32...
+        if (dd.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
+            //if month == 0...
+            if (dd.matches("[0-9]{4}[-][0][0][-][0-3][0-9]")) {
+                return false;
             }
+            //if month >= 13...
+            else if (dd.matches("[0-9]{4}[-][1][3-9][-][0-3][0-9]")) {
+                return false;
+            }
+            //if days == 0...
+            else if (dd.matches("[0-9]{4}[-][0-1][0-9][-][0][0]")) {
+                return false;
+            }
+            //if days >= 32...
+            else if (dd.matches("[0-9]{4}[-][0-1][0-9][-][3][2-9]")) {
+                return false;
+            }
+            //else should return all other valid dates (months 01-12 and days 01-31)...
+            else{
+                return true;
+            }
+        } else {
+            //input did not match yyyy-MM-dd format...
+            return false;
         }
-
-        return tempDueDate;
+    }
+    public void setDueDate(String dueDate){
+        if(isDueDateValid(dueDate))
+            this.dueDate = dueDate;
+        else
+            throw new IllegalArgumentException("You must enter a valid due date...");
+    }
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public String getDueDate() {
-        return this.dueDate;
+    //STATUS
+    public void setStatusAsComplete() {
+        this.status = true;
+    }
+    public void setStatusAsIncomplete() {
+        this.status = false;
+    }
+    public boolean getStatus() {
+        return this.status;
     }
 }

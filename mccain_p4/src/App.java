@@ -5,12 +5,12 @@ public class App {
 
     public static void displayMainMenu() {
         System.out.print(System.lineSeparator());
-        System.out.println("                     - Main Menu -                     ");
-        System.out.println("*******************************************************");
-        System.out.println("* 1. load an existing task list                       *");
-        System.out.println("* 2. view loaded task list or create a new task list  *");
-        System.out.println("* 3. quit the program                                 *");
-        System.out.println("*******************************************************");
+        System.out.println("              - Main Menu -              ");
+        System.out.println("*****************************************");
+        System.out.println("* 1. load an existing task list         *");
+        System.out.println("* 2. view current task list options     *");
+        System.out.println("* 3. quit the program                   *");
+        System.out.println("*****************************************");
     }
 
     public static String mainMenuInput() {
@@ -81,26 +81,103 @@ public class App {
         return choice;
     }
 
-    public static boolean determineListMenuOption(String choice) {
+    public static boolean determineListMenuOption(String choice, TaskList currentTaskList) {
         boolean shouldGoToMainMenu = false;
         switch (choice) {
-            case "1" -> TaskList.printTasks(); //view current task list...
+            case "1" -> currentTaskList.printTasks(currentTaskList); //view current task list...
             case "2" -> { //add task item to task list...
                 //create a temporary task item populated from a function...
                 TaskItem tempTaskItem = setTaskItemFromUser();
                 //store task item in task array list...
-                TaskList.addTasks(tempTaskItem);
+                currentTaskList.addTasks(tempTaskItem);
             }
-            case "3" -> TaskList.editTasks(); //edit a task item...
-            case "4" -> TaskList.deleteTask(); //delete a task item...
+            case "3" -> currentTaskList.editTasks(currentTaskList); //edit a task item...
+            case "4" -> currentTaskList.deleteTask(); //delete a task item...
+
+            //call the function setStatusAsComplete from within TaskItem...
             case "5" -> System.out.println("case 5"); //mark a task item...
+            //call the function setStatusAsIncomplete from within TaskItem...
             case "6" -> System.out.println("case 6"); //unmark a task item...
-            case "7" -> TaskList.storeTasks(); //save current task list to txt file...
+
+            case "7" -> currentTaskList.storeTasks(); //save current task list to txt file...
             case "8" -> shouldGoToMainMenu = true; //return to main menu...
             default -> System.out.println("Error occurred when trying to determine your choice...");
         }
+        //TaskList functions are non-accessible at the moment...
 
         return shouldGoToMainMenu;
+    }
+
+    public static boolean branchFromMainMenu(String mainMenuChoice, TaskList currentTaskList) {
+        String createListChoice;
+        boolean shouldGoToMainMenu = false;
+
+        //NOTE: Unconventional switch case was used to
+        //streamline handling file loading sequence...
+        switch(mainMenuChoice) {
+            case "1":
+                //load existing task list...
+                String tempFileName = getFileName();
+                //check if the file entered exists...
+                boolean doesExist = doesFileExist(tempFileName);
+
+                if (doesExist) {
+                    //load file contents into list...
+                    currentTaskList.loadTasks(tempFileName);
+                }
+                else {
+                    System.out.println("The file name you entered does not exist...");
+                }
+                //regardless of whether or not the file was found, the
+                //main menu should be called after the loading process...
+                shouldGoToMainMenu = true;
+                break;
+            //case 1 should only break if there is an error reading the file name. The code
+            //should then bring up the main menu again. Otherwise, new menu functions from
+            //case 2 should be invoked using the data that was loaded from the txt file...
+            case "2":
+                //open create list menu...
+                displayCreateListMenu();
+                createListChoice = createListMenuInput();
+                shouldGoToMainMenu = determineListMenuOption(createListChoice, currentTaskList);
+                break;
+            case "3":
+                //quitting the program is handled in the App's main function
+                //before this function is ever called...
+                break;
+            default:
+                System.out.println("Error occurred when determining choice...");
+        }
+
+        return shouldGoToMainMenu;
+    }
+
+    public static String getTitle() {
+        Scanner titleInput = new Scanner(System.in);
+        String title;
+
+        System.out.print("Enter a title: ");
+        title = titleInput.nextLine();
+
+        return title;
+    }
+    public static String getDescription() {
+        Scanner descriptionInput = new Scanner(System.in);
+        String description;
+
+        System.out.print("Enter a description: ");
+        description = descriptionInput.nextLine();
+
+        return description;
+    }
+    public static String getDueDate() {
+        Scanner dueDateInput = new Scanner(System.in);
+        String dueDate;
+
+        System.out.print("Enter a due date [yyyy-MM-dd] format: ");
+        dueDate = dueDateInput.nextLine();
+
+        return dueDate;
     }
 
     public static String getFileName() {
@@ -119,73 +196,42 @@ public class App {
         return inputFile.exists();
     }
 
-    public static boolean branchFromMainMenu(String mainMenuChoice) {
-        String createListChoice;
-        boolean shouldGoToMainMenu = false;
-
-        //NOTE: Unconventional switch case was used to
-        //streamline handling file loading sequence...
-        switch(mainMenuChoice) {
-            case "1":
-                //load existing task list...
-                String tempFileName = getFileName();
-                //check if the file entered exists...
-                boolean doesExist = doesFileExist(tempFileName);
-
-                if (doesExist) {
-                    //load file contents into list...
-                    TaskList.loadTasks(tempFileName);
-                    //if file load was successful then main menu should still be called...
-                    shouldGoToMainMenu = true;
-                }
-                else {
-                    //return to main menu...
-                    System.out.println("The file name you entered does not exist...");
-                    shouldGoToMainMenu = true;
-                    break;
-                }
-                break;
-                //case 1 should only break if there is an error reading the file name. The code
-                //should then bring up the main menu again. Otherwise, new menu functions from
-                //case 2 should be invoked using the data that was loaded from the txt file...
-            case "2":
-                //open create list menu...
-                displayCreateListMenu();
-                createListChoice = createListMenuInput();
-                shouldGoToMainMenu = determineListMenuOption(createListChoice);
-                break;
-            case "3":
-                //quitting the program is handled in the App's main function
-                //before this function is ever called...
-                break;
-            default:
-                System.out.println("Error occurred when determining choice...");
-        }
-
-        return shouldGoToMainMenu;
-    }
-
     public static TaskItem setTaskItemFromUser() {
         //get user input...
-        String tempTitle = TaskItem.setTitle();
-        String tempDescription = TaskItem.setDescription();
-        String tempDueDate = TaskItem.setDueDate();
+        String tempTitle = getTitle();
+        String tempDescription = getDescription();
+        String tempDueDate = getDueDate();
+        boolean flag = true;
 
         //create task item from the above variables, then return the object...
-        return new TaskItem(tempTitle, tempDescription, tempDueDate);
+        TaskItem tempTask = new TaskItem(tempTitle, tempDescription, tempDueDate);
+
+        //do not loop if valid input is entered...
+        if (tempTask.isTitleValid(tempTitle) && tempTask.isDueDateValid(tempDueDate)) {
+            flag = false;
+        }
+        else {
+            //loop until a valid task item is entered...
+            while (flag) {
+                //get user data again...
+                tempTitle = getTitle();
+                tempDescription = getDescription();
+                tempDueDate = getDueDate();
+
+                //make a new task item object with updated input...
+                tempTask = new TaskItem(tempTitle, tempDescription, tempDueDate);
+
+                //stop looping once valid input is entered...
+                if (tempTask.isTitleValid(tempTitle) && tempTask.isDueDateValid(tempDueDate)) {
+                    flag = false;
+                }
+            }
+        }
+
+        return tempTask;
     }
 
     //the following classes are used for exception handling...
-    static class InvalidTitleException extends IllegalArgumentException {
-        public InvalidTitleException() {
-            super();
-        }
-    }
-    static class InvalidDueDateException extends IllegalArgumentException {
-        public InvalidDueDateException() {
-            super();
-        }
-    }
     static class InvalidChoiceException extends IllegalArgumentException {
         public InvalidChoiceException() {
             super();
@@ -197,6 +243,8 @@ public class App {
         boolean quitKey = false;
         String menuChoice = null;
         boolean mainMenuOpen = true;
+
+        TaskList currentTaskList = new TaskList();
 
         while (!quitKey) {
             //start with main menu...
@@ -211,7 +259,7 @@ public class App {
                 quitKey = true;
             }
             else {
-                mainMenuOpen = branchFromMainMenu(menuChoice);
+                mainMenuOpen = branchFromMainMenu(menuChoice, currentTaskList);
             }
 
         }
@@ -219,27 +267,3 @@ public class App {
         System.out.println("Program closing...");
     }
 }
-
-/*
-    TO DO:
-    *CURRENT ISSUE(S)*
-    TaskList uses static for functions and even array list variable
-    =========================================================================
-    *console input exception handling*
-    modify exception handling of inputting a title and due date
-    - the dueDate months need to range from 01 to 12, instead of 00 to 19
-    - the dueDate days need to range between 01 and 31 according to month
-    =========================================================================
-    *file IO*
-    readable input txt file needs to be able to store text within TaskList
-    - (array list). Explained another way on next line...
-    previously stored txt files should be able to load as input for TaskList
-    =========================================================================
-    *more updates to menu options*
-    task items within a list need to have the option to be marked as completed
-    - or incomplete from user input in menu
-    need to make sure that the updated menu works with the new features
-    =========================================================================
-    *FINAL STEPS*
-    when finished, create JUnit tests <DO NOT FORGET TO DO FOR FULL CREDIT!!!>
-*/

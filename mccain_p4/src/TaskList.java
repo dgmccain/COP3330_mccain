@@ -5,8 +5,7 @@ import java.util.Formatter;
 import java.util.Scanner;
 
 public class TaskList {
-    //NOTE: variable and functions must be declared static to use from main...
-    private static final ArrayList<TaskItem> taskList = new ArrayList<>();
+    private ArrayList<TaskItem> taskList = new ArrayList<>();
 
     //default constructor...
     public TaskList() {
@@ -14,7 +13,7 @@ public class TaskList {
     }
 
     //ensure that user enters an int value to use as task number...
-    public static int getIntFromUser(String msg) {
+    public int getIntFromUser(String msg) {
         Scanner taskNumInput = new Scanner(System.in);
         boolean flag = true;
 
@@ -38,53 +37,63 @@ public class TaskList {
     }
 
     //print array list elements...
-    public static void printTasks() {
+    public void printTasks(TaskList tempList) {
+        String mark = "***";
+
         //taskList is only accessible from within class TaskList...
-        for (int i = 0; i < taskList.size(); i++) {
-            //include marked/unmarked status after task #i, but before title...
+        for (int i = 0; i < this.taskList.size(); i++) {
             //use (i+1) so that task #0 becomes task #1...
-            System.out.println((i+1) + ") " + taskList.get(i).title +": " +
-                    taskList.get(i).description + " [" + taskList.get(i).dueDate + "]");
+            System.out.print((i+1 + ")"));
+            //only output "***" if the task item status is true...
+            if (this.taskList.get(i).getStatus()) {
+                System.out.print(" " + mark);
+            }
+            //output remaining task item object variables...
+            System.out.println(" " + this.taskList.get(i).getTitle() +": " +
+                    this.taskList.get(i).getDescription() + " [" + this.taskList.get(i).getDueDate() + "]");
         }
     }
 
     //add task item to task list...
-    public static void addTasks(TaskItem tempTask) {
+    public void addTasks(TaskItem tempTask) {
         taskList.add(tempTask);
     }
 
-    //edit task item in task list...
-    public static void editTasks() {
+    public int getTaskItemNumFromUser(String msg) {
         int taskNum;
 
-        //display current tasks for user...
-        TaskList.printTasks();
-
         //get input from user...
-        taskNum = getIntFromUser("edit");
+        taskNum = getIntFromUser(msg);
         //subtract 1 because displayed task #1 corresponds to list element #0...
         taskNum = taskNum - 1;
+
+        return taskNum;
+    }
+
+    //edit task item in task list...
+    public void editTasks(TaskList currentTaskList) {
+        int taskNum;
+
+        //get input from user...
+        taskNum = getTaskItemNumFromUser("edit");
 
         //edit task after ensuring the value is within bounds...
         if (taskNum >= 0 && taskNum <= taskList.size()) {
             System.out.println("Enter new info...");
-            App.setTaskItemFromUser();
-            /*
-            taskList.get(taskNum).title = TaskItem.getTitle();
-            taskList.get(taskNum).description = TaskItem.getDescription();
-            taskList.get(taskNum).dueDate = TaskItem.getDueDate();
-            */
+
+            //get new input...
+            TaskItem tempItem = App.setTaskItemFromUser();
+
+            //store the new input...
+            taskList.set(taskNum, tempItem);
         } else {
             System.out.println("The task number you entered does not exist...");
         }
     }
 
     //remove task item from task list...
-    public static void deleteTask() {
+    public void deleteTask() {
         int taskNum;
-
-        //display current tasks for user...
-        TaskList.printTasks();
 
         //get input from user...
         taskNum = getIntFromUser("delete");
@@ -92,15 +101,20 @@ public class TaskList {
         taskNum = taskNum - 1;
 
         //delete task after ensuring the value is within bounds...
-        if (taskNum >= 0 && taskNum <= taskList.size()) {
-            taskList.remove(taskNum);
-        } else {
+        try {
+            if (taskNum >= 0 && taskNum <= taskList.size()) {
+                taskList.remove(taskNum);
+            } else {
+                throw new IllegalArgumentException();
+            }
+        } catch (IllegalArgumentException e) {
             System.out.println("The task number you entered does not exist...");
         }
+
     }
 
     //store list to txt file...
-    public static void storeTasks() {
+    public void storeTasks() {
         Scanner fileNameInput = new Scanner(System.in);
         String fileName;
         boolean shouldContinue = true;
@@ -122,12 +136,19 @@ public class TaskList {
 
                 //create file object for deletion...
                 File oldFile = new File(fileName);
-                //delete the file object to clear all of its contents before overwriting...
-                if (oldFile.delete()) {
-                    System.out.println("The file was successfully overwritten");
+
+                //check if file is not empty...
+                if (oldFile.length() != 0) {
+                    //delete the file object to clear all of its contents before overwriting...
+                    if (oldFile.delete()) {
+                        System.out.println("The file was successfully overwritten");
+                    } else {
+                        System.out.println("There was an issue overwriting the file...");
+                    }
                 }
+                //empty file does not need to be deleted...
                 else {
-                    System.out.println("There was an issue overwriting the file...");
+                    System.out.println("The file was successfully overwritten");
                 }
 
                 //continue to get new file contents...
@@ -151,24 +172,28 @@ public class TaskList {
                 //let user know that the file was saved successfully...
                 System.out.println("You saved " + fileName + " successfully!");
 
-                //these catches should not typically be triggered...
+                //these catches should not typically be triggered since exception handling is
+                //already dealt with in functions <App.getFileName> and <App.doesFileExist>...
             } catch (FileNotFoundException ex) {
-                System.out.println("The file name you entered does not exist...");
+                System.out.println("ERROR - file was likely deleted or does not exist...");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        //do nothing if the user user does not want to overwrite the file...
+        //returns to menu if the user user does not want to overwrite the file...
     }
 
     //load txt file contents to list...
-    public static void loadTasks(String fileName) {
+    public void loadTasks(String fileName) {
         String lineTitle;
         String lineDescription;
         String lineDueDate;
 
-        //this function is only called if load is successful...
-        System.out.println(fileName + " loaded successfully!");
+        //start by deleting the current taskList before storing the txt data...
+        for (int i = taskList.size(); i > 0; i--) {
+            //remove the last element in the array list...
+            taskList.remove((i-1));
+        }
 
         //exception handling for loading file...
         try {
@@ -193,17 +218,17 @@ public class TaskList {
                 //store task item in list...
                 taskList.add(tempItem);
             }
+
+            //this function is only called if load is successful...
+            System.out.println(fileName + " loaded successfully!");
+
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred when trying to load your file...");
         }
+    }
 
-        //read from txt file and store as new(?) list...
-
-        //each line from the txt file pertains to a new list index. The task
-        //item data is contained within the list index (line). When data is
-        //saved, a delimiter char needs to be added between titles, description,
-        //and due date so that this load function can be read correctly. Use the
-        //delimiter char (likely ;) to separate the file line into task title,
-        //description, and due date - all contained as an element within a list...
+    //return size of the array list...
+    public int getListSize(TaskList tempList) {
+        return this.taskList.size();
     }
 }

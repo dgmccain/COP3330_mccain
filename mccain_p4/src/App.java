@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class App {
 
+    //main menu functions...
     public static void displayMainMenu() {
         System.out.print(System.lineSeparator());
         System.out.println("              - Main Menu -              ");
@@ -12,7 +13,6 @@ public class App {
         System.out.println("* 3. quit the program                   *");
         System.out.println("*****************************************");
     }
-
     public static String mainMenuInput() {
         String choice = "";
         Scanner choiceInput = new Scanner(System.in);
@@ -40,74 +40,7 @@ public class App {
         return choice;
     }
 
-    public static void displayCreateListMenu() {
-        System.out.print(System.lineSeparator());
-        System.out.println("        - Task List Menu -        ");
-        System.out.println("**********************************");
-        System.out.println("* 1. view current task list      *");
-        System.out.println("* 2. add a task                  *");
-        System.out.println("* 3. edit a task                 *");
-        System.out.println("* 4. delete a task               *");
-        System.out.println("* 5. set a task as complete      *");
-        System.out.println("* 6. set a task as incomplete    *");
-        System.out.println("* 7. save current task list      *");
-        System.out.println("* 8. quit to main menu           *");
-        System.out.println("**********************************");
-    }
-
-    public static String createListMenuInput() {
-        String choice = "";
-        Scanner choiceInput = new Scanner(System.in);
-        boolean flag = true;
-
-        //loop until a valid choice is made...
-        while (flag) {
-            System.out.print("\nEnter your choice: ");
-            choice = choiceInput.nextLine();
-
-            //exception handling...
-            try {
-                //check if input is 1-8...
-                if (choice.matches("[1-8]")) {
-                    flag = false;
-                } else {
-                    throw new InvalidChoiceException();
-                }
-            } catch (InvalidChoiceException e) {
-                System.out.println("You must choose between the 8 menu options...");
-            }
-        }
-
-        return choice;
-    }
-
-    public static boolean determineListMenuOption(String choice, TaskList currentTaskList) {
-        boolean shouldGoToMainMenu = false;
-        switch (choice) {
-            case "1" -> currentTaskList.printTasks(currentTaskList); //view current task list...
-            case "2" -> { //add task item to task list...
-                //create a temporary task item populated from a function...
-                TaskItem tempTaskItem = setTaskItemFromUser();
-                //store task item in task array list...
-                currentTaskList.addTasks(tempTaskItem);
-            }
-            case "3" -> currentTaskList.editTasks(currentTaskList); //edit a task item...
-            case "4" -> currentTaskList.deleteTask(); //delete a task item...
-
-            //call the function setStatusAsComplete from within TaskItem...
-            case "5" -> System.out.println("case 5"); //mark a task item...
-            //call the function setStatusAsIncomplete from within TaskItem...
-            case "6" -> System.out.println("case 6"); //unmark a task item...
-
-            case "7" -> currentTaskList.storeTasks(); //save current task list to txt file...
-            case "8" -> shouldGoToMainMenu = true; //return to main menu...
-            default -> System.out.println("Error occurred when trying to determine your choice...");
-        }
-        //TaskList functions are non-accessible at the moment...
-
-        return shouldGoToMainMenu;
-    }
-
+    //branch menu functions...
     public static boolean branchFromMainMenu(String mainMenuChoice, TaskList currentTaskList) {
         String createListChoice;
         boolean shouldGoToMainMenu = false;
@@ -151,7 +84,73 @@ public class App {
 
         return shouldGoToMainMenu;
     }
+    public static void displayCreateListMenu() {
+        System.out.print(System.lineSeparator());
+        System.out.println("        - Task List Menu -        ");
+        System.out.println("**********************************");
+        System.out.println("* 1. view current task list      *");
+        System.out.println("* 2. add a task                  *");
+        System.out.println("* 3. edit a task                 *");
+        System.out.println("* 4. delete a task               *");
+        System.out.println("* 5. set a task as complete      *");
+        System.out.println("* 6. set a task as incomplete    *");
+        System.out.println("* 7. save current task list      *");
+        System.out.println("* 8. quit to main menu           *");
+        System.out.println("**********************************");
+    }
+    public static String createListMenuInput() {
+        String choice = "";
+        Scanner choiceInput = new Scanner(System.in);
+        boolean flag = true;
 
+        //loop until a valid choice is made...
+        while (flag) {
+            System.out.print("\nEnter your choice: ");
+            choice = choiceInput.nextLine();
+
+            //exception handling...
+            try {
+                //check if input is 1-8...
+                if (choice.matches("[1-8]")) {
+                    flag = false;
+                } else {
+                    throw new InvalidChoiceException();
+                }
+            } catch (InvalidChoiceException e) {
+                System.out.println("You must choose between the 8 menu options...");
+            }
+        }
+
+        return choice;
+    }
+    public static boolean determineListMenuOption(String choice, TaskList currentTaskList) {
+        boolean shouldGoToMainMenu = false;
+        switch (choice) {
+            case "1" -> currentTaskList.printTasks(currentTaskList); //view current task list...
+            case "2" -> { //add task item to task list...
+                //create a temporary task item populated from a function...
+                TaskItem tempTaskItem = setTaskItemFromUser();
+                //store task item in task array list...
+                currentTaskList.addTasks(tempTaskItem);
+            }
+            case "3" -> currentTaskList.editTasks(currentTaskList); //edit a task item...
+            case "4" -> currentTaskList.deleteTask(); //delete a task item...
+
+            //call the function setStatusAsComplete from within TaskItem...
+            case "5" -> System.out.println("case 5"); //mark a task item...
+            //call the function setStatusAsIncomplete from within TaskItem...
+            case "6" -> System.out.println("case 6"); //unmark a task item...
+
+            case "7" -> currentTaskList.storeTasks(); //save current task list to txt file...
+            case "8" -> shouldGoToMainMenu = true; //return to main menu...
+            default -> System.out.println("Error occurred when trying to determine your choice...");
+        }
+        //TaskList functions are non-accessible at the moment...
+
+        return shouldGoToMainMenu;
+    }
+
+    //App class getters for task item data...
     public static String getTitle() {
         Scanner titleInput = new Scanner(System.in);
         String title;
@@ -180,22 +179,7 @@ public class App {
         return dueDate;
     }
 
-    public static String getFileName() {
-        String fileName;
-        Scanner fileNameInput = new Scanner(System.in);
-
-        System.out.print("Enter the name of the file you want to load: ");
-        fileName = fileNameInput.nextLine();
-
-        return fileName;
-    }
-
-    public static boolean doesFileExist(String fileName) {
-        File inputFile = new File(fileName);
-
-        return inputFile.exists();
-    }
-
+    //App class setter for task item data...
     public static TaskItem setTaskItemFromUser() {
         //get user input...
         String tempTitle = getTitle();
@@ -231,7 +215,23 @@ public class App {
         return tempTask;
     }
 
-    //the following classes are used for exception handling...
+    //file handling
+    public static String getFileName() {
+        String fileName;
+        Scanner fileNameInput = new Scanner(System.in);
+
+        System.out.print("Enter the name of the file you want to load: ");
+        fileName = fileNameInput.nextLine();
+
+        return fileName;
+    }
+    public static boolean doesFileExist(String fileName) {
+        File inputFile = new File(fileName);
+
+        return inputFile.exists();
+    }
+
+    //the following class is used for exception handling...
     static class InvalidChoiceException extends IllegalArgumentException {
         public InvalidChoiceException() {
             super();

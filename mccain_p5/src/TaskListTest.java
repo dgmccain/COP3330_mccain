@@ -1,0 +1,143 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class TaskListTest {
+
+    //TEST EMPTY
+    //check if new task list is empty...
+    @Test
+    public void TestNewTaskListIsEmpty() {
+        //test goes here...
+    }
+
+    //TEST GETTERS
+    //fails to get title...
+    @Test
+    public void TestGettingTaskItemTitleFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully gets title...
+    @Test
+    public void TestGettingTaskItemTitleSucceedsWithValidIndex() {
+        //test goes here...
+    }
+
+    //fails to get description...
+    @Test
+    public void TestGettingTaskItemDescriptionFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully gets description...
+    @Test
+    public void TestGettingTaskItemDescriptionSucceedsWithValidIndex() {
+        //test goes here...
+    }
+
+    //fails to get due date...
+    @Test
+    public void TestGettingTaskItemDueDateFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully gets due date...
+    @Test
+    public void TestGettingTaskItemDueDateSucceedsWithValidIndex() {
+        //test goes here...
+    }
+
+    //TEST ADDING TASK ITEMS
+    @Test
+    public void TestAddingTaskItemsIncreasesSize() {
+        //test goes here...
+    }
+
+    //TEST EDITING TASK ITEMS
+    //fails to edit title...
+    @Test
+    public void TestEditingTaskItemTitleFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully edits title...
+    @Test
+    public void TestEditingTaskItemTitleChangesValue() {
+        //test goes here...
+    }
+
+    //fails to edit description...
+    @Test
+    public void TestEditingTaskItemDescriptionFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully edits description...
+    @Test
+    public void TestEditingTaskItemDescriptionChangesValue() {
+        //test goes here...
+    }
+
+    //fails to edit due date...
+    @Test
+    public void TestEditingTaskItemDueDateFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully edits due date...
+    @Test
+    public void TestEditingTaskItemDueDateChangesValue() {
+        //test goes here...
+    }
+
+    //successfully edits task item...
+    @Test
+    public void TestEditingTaskItemChangesValues() {
+        //test goes here...
+    }
+
+    //TEST REMOVING TASK ITEMS
+    //fails to remove task item...
+    @Test
+    public void TestRemovingTaskItemsFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully removes task item...
+    @Test
+    public void TestRemovingTaskItemsDecreasesSize() {
+        //test goes here...
+    }
+
+    //TEST CHANGING TASK ITEM STATUS
+    //fails to mark task item...
+    @Test
+    public void TestCompletingTaskItemFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully marks task item...
+    @Test
+    public void TestCompletingTaskItemChangesStatus() {
+        //test goes here...
+    }
+
+    //fails to unmark task item...
+    @Test
+    public void TestUncompletingTaskItemFailsWithInvalidIndex() {
+        //test goes here...
+    }
+
+    //successfully unmarks task item...
+    @Test
+    public void TestUncompletingTaskItemChangesStatus() {
+        //test goes here...
+    }
+
+    //TEST LOAD TASK LIST
+    //successfully loads task item...
+    @Test
+    public void TestSavedTaskListCanBeLoaded() {
+        //test goes here...
+    }
+}

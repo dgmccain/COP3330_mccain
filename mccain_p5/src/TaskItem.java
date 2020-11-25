@@ -6,11 +6,13 @@ public class TaskItem {
 
     //default constructor...
     public TaskItem(String title, String description, String dueDate) {
-        new TaskItem(title, description, dueDate, false);
-        //TaskApp should not retrieve status from user input when a new task item
-        //is created (because new tasks should not be set as complete), so the
-        //default status should be set to false (incomplete). This is accomplished
-        //by creating a new TaskItem object with the current data & false status...
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = false;
+        //TaskApp should not retrieve status from user input when a new task
+        //item is created (because new tasks should not be set as complete),
+        //so the default status should be set to false (incomplete).
     }
 
     //constructor with status included as a parameter...

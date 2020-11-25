@@ -41,24 +41,24 @@ public class TaskItem {
         //check if title is empty...
         return !title.matches("");
     }
-    public boolean isDueDateValid(String dd) {
+    public boolean isDueDateValid(String dueDate) {
         //check if due date match yyyy-MM-dd format...
         //if statements ensure that months are 01-12 and days are 01-32...
-        if (dd.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
+        if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
             //if month == 0...
-            if (dd.matches("[0-9]{4}[-][0][0][-][0-3][0-9]")) {
+            if (dueDate.matches("[0-9]{4}[-][0][0][-][0-3][0-9]")) {
                 return false;
             }
             //if month >= 13...
-            else if (dd.matches("[0-9]{4}[-][1][3-9][-][0-3][0-9]")) {
+            else if (dueDate.matches("[0-9]{4}[-][1][3-9][-][0-3][0-9]")) {
                 return false;
             }
             //if days == 0...
-            else if (dd.matches("[0-9]{4}[-][0-1][0-9][-][0][0]")) {
+            else if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][0][0]")) {
                 return false;
             }
             //if days >= 32...
-            else if (dd.matches("[0-9]{4}[-][0-1][0-9][-][3][2-9]")) {
+            else if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][3][2-9]")) {
                 return false;
             }
             //else should return all other valid dates (months 01-12 and days 01-31)...

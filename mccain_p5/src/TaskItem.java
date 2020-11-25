@@ -28,6 +28,13 @@ public class TaskItem {
         //so the default status should be set to false (incomplete)...
     }
 
+    /**
+     check to see if input validations are needed in this constructor. I
+     do not think they are necessary because all of the user input should
+     go through the default constructor (^above^). This means I need to
+     CHECK TO SEE WHEN THIS CONSTRUCTOR IS USED within the TaskApp class.
+     I believe that it should be used when marking/unmarking item status...
+     **/
     //CONSTRUCTOR (with status included as a parameter)...
     public TaskItem(String title, String description, String dueDate, boolean status) {
         this.title = title;
@@ -91,6 +98,12 @@ public class TaskItem {
         else {
             throw new IllegalArgumentException("You must enter a valid due date...");
         }
+    }
+    public void setStatusAsComplete() {
+        this.status = true;
+    }
+    public void setStatusAsIncomplete() {
+        this.status = false;
     }
 
     //GETTERS - need to see if getters would be helpful/used...

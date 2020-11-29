@@ -8,33 +8,24 @@ public class TaskItem {
     public TaskItem(String title, String description, String dueDate) {
         if (isTitleValid(title)) {
             this.title = title;
-        }
-        else {
-            throw new IllegalArgumentException("INVALID - you must enter a title");
+        } else {
+            throw new IllegalArgumentException("INVALID - you did not enter a title");
         }
 
         this.description = description;
 
         if (isDueDateValid(dueDate)) {
             this.dueDate = dueDate;
-        }
-        else {
-            throw new IllegalArgumentException("INVALID - you must enter a valid due date");
+        } else {
+            throw new IllegalArgumentException("INVALID - you did not enter a correct due date");
         }
 
-        this.status = false;
         //TaskApp should not retrieve status from user input when a new task
         //item is created (because new tasks should not be set as complete),
         //so the default status should be set to false (incomplete)...
+        this.status = false;
     }
 
-    /**
-     check to see if input validations are needed in this constructor. I
-     do not think they are necessary because all of the user input should
-     go through the default constructor (^above^). This means I need to
-     CHECK TO SEE WHEN THIS CONSTRUCTOR IS USED within the TaskApp class.
-     I believe that it should be used when marking/unmarking item status...
-     **/
     //CONSTRUCTOR (with status included as a parameter)...
     public TaskItem(String title, String description, String dueDate, boolean status) {
         this.title = title;
@@ -43,7 +34,7 @@ public class TaskItem {
         this.status = status;
     }
 
-    //INPUT VALIDATION...
+    //INPUT VALIDATION
     public boolean isTitleValid(String title) {
         //check if title is empty...
         return !title.matches("");
@@ -51,6 +42,7 @@ public class TaskItem {
     public boolean isDueDateValid(String dueDate) {
         //check if due date match yyyy-MM-dd format...
         //if statements ensure that months are 01-12 and days are 01-32...
+        //add LocalDate/LocalDateTime and DateTimeFormatter...
         if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
             //if month == 0...
             if (dueDate.matches("[0-9]{4}[-][0][0][-][0-3][0-9]")) {
@@ -78,14 +70,13 @@ public class TaskItem {
         }
     }
 
-    //SETTERS...
-    //functions go here...
-    public void setTitle(String title){
-        if(isTitleValid(title)) {
+    //SETTERS
+    //setTitle() and setDueDate() catch exceptions in the TaskApp class...
+    public void setTitle(String title) {
+        if (isTitleValid(title)) {
             this.title = title;
-        }
-        else {
-            throw new IllegalArgumentException("You must enter a title...");
+        } else {
+            throw new IllegalArgumentException("You did not enter a title - Task was not created...");
         }
     }
     public void setDescription(String description) {
@@ -94,8 +85,7 @@ public class TaskItem {
     public void setDueDate(String dueDate){
         if(isDueDateValid(dueDate)) {
             this.dueDate = dueDate;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("You must enter a valid due date...");
         }
     }
@@ -106,7 +96,7 @@ public class TaskItem {
         this.status = false;
     }
 
-    //GETTERS - need to see if getters would be helpful/used...
+    //GETTERS
     public String getTitle() {
         return this.title;
     }

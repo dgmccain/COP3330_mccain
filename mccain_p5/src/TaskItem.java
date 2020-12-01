@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class TaskItem {
     private String title;
     private String description;
@@ -40,34 +42,40 @@ public class TaskItem {
         return !title.matches("");
     }
     public boolean isDueDateValid(String dueDate) {
-        //check if due date match yyyy-MM-dd format...
-        //if statements ensure that months are 01-12 and days are 01-32...
-        //add LocalDate/LocalDateTime and DateTimeFormatter...
-        if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][0-3][0-9]")) {
-            //if month == 0...
-            if (dueDate.matches("[0-9]{4}[-][0][0][-][0-3][0-9]")) {
-                return false;
+        //variables used in the event when user enters '/' instead of '-' for date...
+        char[] correctDueDate = dueDate.toCharArray();
+        StringBuilder dueDateBuilder = new StringBuilder("");
+
+        //TEMPORARILY adjust user input from '/' to be changed to '-' instead, so
+        //that LocalDate can be correctly parsed with the entered dueDate...
+        if (dueDate.matches("[0-9]{4}[/][0-1][0-9][/][0-3][0-9]")) {
+            correctDueDate[4] = '-';
+            correctDueDate[7] = '-';
+
+            //stopping point is before 10, because there are 10 chars in yyyy-MM-dd format and
+            //the index at 0 should be included as the 1st char entry point within the loop...
+            for (int i = 0; i < 10; i++) {
+                dueDateBuilder.append(correctDueDate[i]);
             }
-            //if month >= 13...
-            else if (dueDate.matches("[0-9]{4}[-][1][3-9][-][0-3][0-9]")) {
-                return false;
-            }
-            //if days == 0...
-            else if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][0][0]")) {
-                return false;
-            }
-            //if days >= 32...
-            else if (dueDate.matches("[0-9]{4}[-][0-1][0-9][-][3][2-9]")) {
-                return false;
-            }
-            //else should return all other valid dates (months 01-12 and days 01-31)...
-            else{
-                return true;
-            }
-        } else {
-            //input did not match yyyy-MM-dd format...
+            dueDate = dueDateBuilder.toString();
+        }
+
+        //after '-' format is verified, check if date is legitimate...
+        LocalDate dateChecker;
+        try {
+            dateChecker = LocalDate.parse(dueDate);
+            return true;
+        } catch (java.time.format.DateTimeParseException e) {
             return false;
         }
+        //NOTE: the user's preferred choice of yyyy/MM/dd is stored in the TaskItem
+        //object, because this function's dueDate is only temporarily used to return
+        //a boolean type value. To store the dueDate with format yyyy-MM-dd instead
+        //of yyyy/MM/dd, insert <this.dueDate = dueDate;> after the following line:
+        //<dateChecker = LocalDate.parse(dueDate);> and before: <return true;>. Then
+        //remove the line: <this.dueDate = dueDate;> from the TaskItem constructor.
+        //Otherwise, the constructor will continue to set the TaskItem object's dueDate
+        //back to the user's yyyy/MM/dd format...
     }
 
     //SETTERS

@@ -10,7 +10,7 @@ public class TaskApp {
     private TaskItem currentTaskItem = new TaskItem("tempTitle", "tempDesc", "2020-01-01");
     private boolean TasksOpen = true;
 
-    //essentially equivalent in importance to main()...
+    //TaskApp class should start by running here...
     public void runTApp() {
         String mainMenuChoice;
 
@@ -41,15 +41,13 @@ public class TaskApp {
     public void loadTaskMenu() {
         //get filename...
         String fileName = retrieveFileNameFromUserInput();
+        //load if file exists...
         if(doesFileExist(fileName)) {
             currentTaskList.loadTaskListFromFile(fileName);
         }
         else {
             System.out.println(fileName + " does not exist...");
         }
-        //validate file, along with exception handling...
-        //if file does exist, load file from within TaskList
-        //function, passing in filename as a parameter...
     }
 
     //menu option 2...

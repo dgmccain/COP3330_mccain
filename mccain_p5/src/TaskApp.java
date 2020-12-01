@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -58,6 +59,13 @@ public class TaskApp {
 
     public void loadTaskMenu() {
         //get filename...
+        String fileName = retrieveFileNameFromUserInput();
+        if(doesFileExist(fileName)) {
+            currentTaskList.loadTasks(fileName);
+        }
+        else {
+            System.out.println(fileName + " does not exist...");
+        }
         //validate file, along with exception handling...
         //if file does exist, load file from within TaskList
         //function, passing in filename as a parameter...
@@ -67,6 +75,9 @@ public class TaskApp {
         boolean branchMenuOpen = true;
         String branchMenuChoice;
         int index;
+        String fileName;
+        boolean fileExistence;
+        boolean overWriteFile;
 
         while (branchMenuOpen) {
             displayTaskListOperationsMenu();
@@ -98,8 +109,6 @@ public class TaskApp {
                             System.out.println("task #" + index + 1 + " was edited");
                         }
                     }
-                    //retrieveTaskNumberFromUserInput(), and setTaskItemFromUserInput()
-                    //might need to be duplicated within the TaskList class...
                     break;
                 case "4":
                     //remove task...
@@ -110,8 +119,6 @@ public class TaskApp {
                             currentTaskList.deleteItemFromList(index);
                         }
                     }
-                    //retrieveTaskNumberFromUserInput() might need to be
-                    //duplicated within the TaskList class...
                     break;
                 case "5":
                     //mark tasks...
@@ -135,6 +142,19 @@ public class TaskApp {
                     break;
                 case "7":
                     //save tasks...
+                    fileName = retrieveFileNameFromUserInput();
+                    fileExistence = doesFileExist(fileName);
+                    if (fileExistence) {
+                        overWriteFile = shouldFileBeOverWritten(fileName);
+                        if (overWriteFile) {
+                            currentTaskList.saveTaskListToFile(fileName);
+                        } else {
+                            System.out.println("You chose not to overwrite " + fileName);
+                        }
+                    }
+                    else {
+                        currentTaskList.saveTaskListToFile(fileName);
+                    }
                     break;
                 case "8":
                     //return to task main menu...
@@ -144,62 +164,6 @@ public class TaskApp {
                 default:
                     System.out.println("ERROR - issue occurred with task operation menu choice");
             }
-
-            /**
-            //initialize variables for data to be entered by user input...
-            String tempTitle = "";
-            String tempDescription = "";
-            String tempDueDate = "";
-
-            //boolean for while loop - ends when user inputs valid data...
-            boolean isInputValid = false;
-
-            while (!isInputValid) {
-                try {
-                    //retrieve user input data...
-                    tempTitle = userInputTitle();
-                    tempDescription = userInputDescription();
-                    tempDueDate = userInputDueDate();
-
-                    //create a new task item from above user input data...
-                    TaskItem mainTaskItem = new TaskItem(tempTitle, tempDescription, tempDueDate);
-                    isInputValid = true;
-
-                    //add item to list if user input is valid...
-                    mainTaskList.addToList(mainTaskItem);
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            //create a new task item from above user input data...
-            TaskItem mainTaskItem = new TaskItem(tempTitle, tempDescription, tempDueDate);
-
-            //view task item data...
-            displayTaskItem(mainTaskItem);
-
-            //check mark/unmark status...
-
-            //mark as complete...
-            mainTaskItem.setStatusAsComplete();
-            //view updated data...
-            displayTaskItem(mainTaskItem);
-            //mark as incomplete...
-            mainTaskItem.setStatusAsIncomplete();
-            //view updated data...
-            displayTaskItem(mainTaskItem);
-
-             //display task item data...
-             private void displayTaskItem(TaskItem currentItem) {
-             if (currentItem.getStatus()) {
-             System.out.print("*** ");
-             }
-             System.out.print(currentItem.getTitle() + ": ");
-             System.out.print(currentItem.getDescription() + " ");
-             System.out.println("[" + currentItem.getDueDate() + "]");
-             }
-
-            **/
         }
     }
 
@@ -263,9 +227,6 @@ public class TaskApp {
                 flag = false;
             } catch (InputMismatchException e) {
                 System.out.println(("you did not enter a valid task number..."));
-                //implement the following code instead to fulfill requirement:
-                //throw new InputMismatchException("you did not enter a valid task number...");
-                //then, the exception has to be caught from the function that calls this function...
             }
             userInput.nextLine(); //input buffer
         }
@@ -280,6 +241,24 @@ public class TaskApp {
             System.out.println("INVALID - that task number does not exist");
             return false;
         }
+    }
+    //retrieve file name from user input...
+    public String retrieveFileNameFromUserInput() {
+        String fileName;
+
+        System.out.print("Enter a file name: ");
+        fileName = userInput.nextLine();
+
+        return fileName;
+    }
+    public boolean shouldFileBeOverWritten(String fileName) {
+        String response;
+
+        System.out.println("The file <" + fileName + "> already exists. Would you like to permanently overwrite it?");
+        System.out.print("Enter 'yes' to continue. Enter anything else to cancel: ");
+        response = userInput.nextLine();
+
+        return response.equalsIgnoreCase("yes");
     }
 
     //CHECKER FUNCTIONS
@@ -309,6 +288,11 @@ public class TaskApp {
         else {
             return false;
         }
+    }
+    public static boolean doesFileExist(String fileName) {
+        File inputFile = new File(fileName);
+
+        return inputFile.exists();
     }
 
     //MENU FUNCTIONS
@@ -379,9 +363,6 @@ public class TaskApp {
 
         return choice;
     }
-
-    //determine if operation menu (action or actions to take) is needed. Currently
-    //using switch case from within branchMenu() to accomplish this...
 
     /**
      ==========================================================

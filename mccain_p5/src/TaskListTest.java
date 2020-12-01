@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskListTest {
     //NEW LIST IS EMPTY
     @Test
-    public void newListIsEmpty() {
+    public void newTaskListIsEmpty() {
         TaskList testList = new TaskList();
 
         assertEquals(0, testList.getEntireTaskListSize());
@@ -13,7 +13,7 @@ class TaskListTest {
 
     //ADDING ITEM
     @Test
-    public void addingItemIncreasesSize() {
+    public void addingTaskItemIncreasesSize() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
         TaskList testList = new TaskList();
 
@@ -21,9 +21,8 @@ class TaskListTest {
 
         assertEquals(1, testList.getEntireTaskListSize());
     }
-
     @Test
-    public void addingItemIsCorrectlyStoredInList() {
+    public void addingTaskItemIsCorrectlyStoredInList() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
         TaskList testList = new TaskList();
 
@@ -35,61 +34,15 @@ class TaskListTest {
         assertFalse(testList.getTaskItemStatusFromList(0));
     }
 
-    //GETTING ITEM DATA
-    @Test
-    public void gettingItemTitleSucceedsWithValidIndex() {
-        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
-        TaskList testList = new TaskList();
-
-        testList.addTaskItemToList(testItem);
-
-        assertEquals("title", testList.getTaskItemTitleFromList(0));
-    }
-
-    @Test
-    public void gettingItemTitleFailsWithInvalidIndex() {
-        TaskList testList = new TaskList();
-
-        assertThrows(IndexOutOfBoundsException.class, () -> testList.getTaskItemTitleFromList(0));
-    }
-
-    @Test
-    public void gettingItemDescriptionSucceedsWithValidIndex() {
-        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
-        TaskList testList = new TaskList();
-
-        testList.addTaskItemToList(testItem);
-
-        assertEquals("desc", testList.getTaskItemDescriptionFromList(0));
-    }
-
-    @Test
-    public void gettingItemDescriptionFailsWithInvalidIndex() {
-        TaskList testList = new TaskList();
-
-        assertThrows(IndexOutOfBoundsException.class, () -> testList.getTaskItemDescriptionFromList(0));
-    }
-
-    @Test
-    public void gettingItemDueDateSucceedsWithValidIndex() {
-        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
-        TaskList testList = new TaskList();
-
-        testList.addTaskItemToList(testItem);
-
-        assertEquals("2020-01-01", testList.getTaskItemDueDateFromList(0));
-    }
-
-    @Test
-    public void gettingItemDueDateFailsWithInvalidIndex() {
-        TaskList testList = new TaskList();
-
-        assertThrows(IndexOutOfBoundsException.class, () -> testList.getTaskItemDueDateFromList(0));
-    }
-
     //REMOVING ITEM
     @Test
-    public void removingItemsDecreasesSize() {
+    public void removingTaskItemFailsWithInvalidIndex() {
+        TaskList testList = new TaskList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> testList.deleteTaskItemFromList(0));
+    }
+    @Test
+    public void removingTaskItemDecreasesSize() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
         TaskList testList = new TaskList();
 
@@ -99,33 +52,57 @@ class TaskListTest {
         assertEquals(0, testList.getEntireTaskListSize());
     }
 
+    //GETTING ITEM DATA
     @Test
-    public void removingItemsFailsWithInvalidIndex() {
+    public void gettingTaskItemTitleFailsWithInvalidIndex() {
         TaskList testList = new TaskList();
 
-        assertThrows(IndexOutOfBoundsException.class, () -> testList.deleteTaskItemFromList(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> testList.getTaskItemTitleFromList(0));
+    }
+    @Test
+    public void gettingTaskItemTitleSucceedsWithValidIndex() {
+        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+        TaskList testList = new TaskList();
+
+        testList.addTaskItemToList(testItem);
+
+        assertEquals("title", testList.getTaskItemTitleFromList(0));
+    }
+    @Test
+    public void gettingTaskItemDescriptionFailsWithInvalidIndex() {
+        TaskList testList = new TaskList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> testList.getTaskItemDescriptionFromList(0));
+    }
+    @Test
+    public void gettingTaskItemDescriptionSucceedsWithValidIndex() {
+        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+        TaskList testList = new TaskList();
+
+        testList.addTaskItemToList(testItem);
+
+        assertEquals("desc", testList.getTaskItemDescriptionFromList(0));
+    }
+    @Test
+    public void gettingTaskItemDueDateFailsWithInvalidIndex() {
+        TaskList testList = new TaskList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> testList.getTaskItemDueDateFromList(0));
+    }
+    @Test
+    public void gettingTaskItemDueDateSucceedsWithValidIndex() {
+        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+        TaskList testList = new TaskList();
+
+        testList.addTaskItemToList(testItem);
+
+        assertEquals("2020-01-01", testList.getTaskItemDueDateFromList(0));
     }
 
     //EDITING ITEM
     //title...
     @Test
-    public void editingItemTitleSucceedsWithExpectedValue() {
-        TaskItem testOriginalItem = new TaskItem("original title", "desc", "2020-01-01");
-        TaskList testList = new TaskList();
-
-        //add an item to list and check to see if it was stored correctly...
-        testList.addTaskItemToList(testOriginalItem);
-        assertEquals("original title", testList.getTaskItemTitleFromList(0));
-
-        //edit the item and verify the updated contents...
-        TaskItem testUpdatedItem = new TaskItem("updated title", "desc", "2020-01-01");
-        testList.editTaskItemInList(testUpdatedItem, 0);
-
-        assertEquals("updated title", testList.getTaskItemTitleFromList(0));
-    }
-
-    @Test
-    public void editingItemTitleFailsWithInvalidIndex() {
+    public void editingTaskItemTitleFailsWithInvalidIndex() {
         //applies to title, description, and due date because the function takes
         //an entire task item as a parameter along with an index (item location)...
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
@@ -135,9 +112,8 @@ class TaskListTest {
         assertThrows(IndexOutOfBoundsException.class, () ->
                 testList.editTaskItemInList(testItem, 0));
     }
-
     @Test
-    public void editingItemTitleFailsIfEmptyString() {
+    public void editingTaskItemTitleFailsIfEmptyString() {
         TaskItem testOriginalItem = new TaskItem("original title", "desc", "2020-01-01");
         TaskList testList = new TaskList();
 
@@ -154,10 +130,33 @@ class TaskListTest {
             System.out.println(e.getMessage());
         }
     }
+    @Test
+    public void editingTaskItemTitleSucceedsWithExpectedValue() {
+        TaskItem testOriginalItem = new TaskItem("original title", "desc", "2020-01-01");
+        TaskList testList = new TaskList();
+
+        //add an item to list and check to see if it was stored correctly...
+        testList.addTaskItemToList(testOriginalItem);
+        assertEquals("original title", testList.getTaskItemTitleFromList(0));
+
+        //edit the item and verify the updated contents...
+        TaskItem testUpdatedItem = new TaskItem("updated title", "desc", "2020-01-01");
+        testList.editTaskItemInList(testUpdatedItem, 0);
+
+        assertEquals("updated title", testList.getTaskItemTitleFromList(0));
+    }
 
     //description...
     @Test
-    public void editingItemDescriptionSucceedsWithExpectedValue() {
+    public void editingTaskItemDescriptionFailsWithInvalidIndex() {
+        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+        TaskList testList = new TaskList();
+
+        assertThrows(IndexOutOfBoundsException.class, () ->
+                testList.editTaskItemInList(testItem, 0));
+    }
+    @Test
+    public void editingTaskItemDescriptionSucceedsWithExpectedValue() {
         TaskItem testOriginalItem = new TaskItem("title", "original desc", "2020-01-01");
         TaskList testList = new TaskList();
 
@@ -170,30 +169,7 @@ class TaskListTest {
         assertEquals("updated desc", testList.getTaskItemDescriptionFromList(0));
     }
 
-    @Test
-    public void editingItemDescriptionFailsWithInvalidIndex() {
-        TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
-        TaskList testList = new TaskList();
-
-        assertThrows(IndexOutOfBoundsException.class, () ->
-                testList.editTaskItemInList(testItem, 0));
-    }
-
     //due date...
-    @Test
-    public void editingItemDueDateSucceedsWithExpectedValue() {
-        TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
-        TaskList testList = new TaskList();
-
-        testList.addTaskItemToList(testOriginalItem);
-        assertEquals("2020-01-01", testList.getTaskItemDueDateFromList(0));
-
-        TaskItem testUpdatedItem = new TaskItem("title", "updated desc", "2020-02-02");
-        testList.editTaskItemInList(testUpdatedItem, 0);
-
-        assertEquals("2020-02-02", testList.getTaskItemDueDateFromList(0));
-    }
-
     @Test
     public void editingTaskItemDueDateFailsWithInvalidIndex() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
@@ -202,7 +178,6 @@ class TaskListTest {
         assertThrows(IndexOutOfBoundsException.class, () ->
                 testList.editTaskItemInList(testItem, 0));
     }
-
     @Test
     public void editingTaskItemDueDateFailsWithInvalidDateFormat() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
@@ -218,7 +193,6 @@ class TaskListTest {
             System.out.println(e.getMessage());
         }
     }
-
     @Test
     public void editingTaskItemDueDateFailsWithInvalidMonth() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
@@ -234,7 +208,6 @@ class TaskListTest {
             System.out.println(e.getMessage());
         }
     }
-
     @Test
     public void editingTaskItemDueDateFailsWithInvalidDay() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
@@ -250,20 +223,21 @@ class TaskListTest {
             System.out.println(e.getMessage());
         }
     }
-
-    //MARKING ITEM
     @Test
-    public void markingTaskItemChangesStatus() {
+    public void editingTaskItemDueDateSucceedsWithExpectedValue() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
         TaskList testList = new TaskList();
 
         testList.addTaskItemToList(testOriginalItem);
-        assertFalse(testList.getTaskItemStatusFromList(0));
+        assertEquals("2020-01-01", testList.getTaskItemDueDateFromList(0));
 
-        testList.markTaskItemInList(0);
-        assertTrue(testList.getTaskItemStatusFromList(0));
+        TaskItem testUpdatedItem = new TaskItem("title", "updated desc", "2020-02-02");
+        testList.editTaskItemInList(testUpdatedItem, 0);
+
+        assertEquals("2020-02-02", testList.getTaskItemDueDateFromList(0));
     }
 
+    //MARKING ITEM
     @Test
     public void markingTaskItemFailsWithInvalidIndex() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
@@ -279,20 +253,19 @@ class TaskListTest {
             System.out.println(e.getMessage());
         }
     }
-
-    //UNMARKING ITEM
     @Test
-    public void unmarkingTaskItemChangesStatus() {
-        TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01", true);
+    public void markingTaskItemChangesStatus() {
+        TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
         TaskList testList = new TaskList();
 
         testList.addTaskItemToList(testOriginalItem);
-        assertTrue(testList.getTaskItemStatusFromList(0));
-
-        testList.unmarkTaskItemInList(0);
         assertFalse(testList.getTaskItemStatusFromList(0));
+
+        testList.markTaskItemInList(0);
+        assertTrue(testList.getTaskItemStatusFromList(0));
     }
 
+    //UNMARKING ITEM
     @Test
     public void unmarkingTaskItemFailsWithInvalidIndex() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01", true);
@@ -308,6 +281,17 @@ class TaskListTest {
             System.out.println(e.getMessage());
         }
     }
+    @Test
+    public void unmarkingTaskItemChangesStatus() {
+        TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01", true);
+        TaskList testList = new TaskList();
+
+        testList.addTaskItemToList(testOriginalItem);
+        assertTrue(testList.getTaskItemStatusFromList(0));
+
+        testList.unmarkTaskItemInList(0);
+        assertFalse(testList.getTaskItemStatusFromList(0));
+    }
 
     //SAVING ITEM LIST
     @Test
@@ -320,7 +304,6 @@ class TaskListTest {
         //check if the newly saved file exists...
         assertFalse(TaskApp.doesFileExist("saveTaskList_ExampleFile2.txt"));
     }
-
     @Test
     public void savingTaskListSucceeds() {
         TaskItem testOriginalItem = new TaskItem("title", "desc", "2020-01-01");
@@ -347,7 +330,6 @@ class TaskListTest {
         //check if the file exists...
         assertFalse(TaskApp.doesFileExist("aFileThatDoesNotExist"));
     }
-
     @AfterAll
     public static void loadingTaskListSucceeds() {
         //can ONLY TEST AFTER <savingTaskListSucceeds()> test has passed. File

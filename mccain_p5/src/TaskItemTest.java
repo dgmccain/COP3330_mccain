@@ -15,6 +15,7 @@ class TaskItemTest {
     @Test
     public void TestCreateTaskItemSucceedsWithValidTitle() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+
         assertEquals("title", testItem.getTitle());
     }
 
@@ -42,6 +43,7 @@ class TaskItemTest {
     @Test
     public void TestSetTaskItemDescriptionSucceeds() {
         TaskItem testItem = new TaskItem("title", "Original Description", "2020-01-01");
+
         testItem.setDescription("Updated Description");
 
         assertEquals("Updated Description", testItem.getDescription());
@@ -81,6 +83,7 @@ class TaskItemTest {
     @Test
     public void TestCreateTaskItemSucceedsWithValidDueDate() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+
         assertEquals("2020-01-01", testItem.getDueDate());
     }
 
@@ -129,6 +132,7 @@ class TaskItemTest {
     @Test
     public void TestSetTaskItemSucceedsWithValidDueDate() {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
+
         assertEquals("2020-01-01", testItem.getDueDate());
     }
 }

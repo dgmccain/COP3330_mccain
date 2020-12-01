@@ -2,22 +2,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class TaskList {
-    private final ArrayList<TaskItem> taskList = new ArrayList<>();
+    private final List<TaskItem> taskList = new ArrayList<>();
 
     public TaskList() {
         //default constructor...
     }
 
     //add item to list...
-    public void addItemToList(TaskItem taskItem) {
+    public void addTaskItemToList(TaskItem taskItem) {
         taskList.add(taskItem);
     }
 
     //edit items in list...
-    public void editItemInList(TaskItem updatedTaskItem, int location) {
+    public void editTaskItemInList(TaskItem updatedTaskItem, int location) {
         try {
             this.taskList.get(location).setTitle(updatedTaskItem.getTitle());
             this.taskList.get(location).setDescription(updatedTaskItem.getDescription());
@@ -29,13 +30,13 @@ public class TaskList {
     }
 
     //delete item from list...
-    public void deleteItemFromList(int index) {
+    public void deleteTaskItemFromList(int index) {
         taskList.remove(index);
         System.out.println("task #" + (index + 1) + " was deleted");
     }
 
     //display entire list contents...
-    public void displayItemsInList() {
+    public void displayTaskItemsInList() {
         String mark = "***";
 
         for (int i = 0; i < this.taskList.size(); i++) {
@@ -52,7 +53,7 @@ public class TaskList {
     }
 
     //display marked/unmarked task items in task list...
-    public void displayMarkedTasksInList() {
+    public void displayMarkedTaskItemsInList() {
         String mark = "***";
 
         for (int i = 0; i < this.taskList.size(); i++) {
@@ -68,7 +69,7 @@ public class TaskList {
             }
         }
     }
-    public void displayUnmarkedTasksInList() {
+    public void displayUnmarkedTaskItemsInList() {
         for (int i = 0; i < this.taskList.size(); i++) {
             //only output task item if the status is false...
             if (!this.taskList.get(i).getStatus()) {
@@ -83,10 +84,10 @@ public class TaskList {
     }
 
     //set task item in task list to marked/unmarked...
-    public void markItemInList(int index) {
+    public void markTaskItemInList(int index) {
         int taskNum = index + 1;
 
-        if (index >= 0 && index < getEntireListSize()) {
+        if (index >= 0 && index < getEntireTaskListSize()) {
             //if status is unmarked...
             if (!this.taskList.get(index).getStatus()) {
                 this.taskList.get(index).setStatusAsComplete();
@@ -98,10 +99,10 @@ public class TaskList {
             throw new IllegalArgumentException("ERROR - index out of bounds. Did not mark task");
         }
     }
-    public void unmarkItemInList(int index) {
+    public void unmarkTaskItemInList(int index) {
         int taskNum = index + 1;
 
-        if (index >= 0 && index < getEntireListSize()) {
+        if (index >= 0 && index < getEntireTaskListSize()) {
             //if status is marked...
             if (this.taskList.get(index).getStatus()) {
                 this.taskList.get(index).setStatusAsIncomplete();
@@ -115,10 +116,10 @@ public class TaskList {
     }
 
     //function for getting sizes of list...
-    public int getEntireListSize() {
+    public int getEntireTaskListSize() {
         return taskList.size();
     }
-    public int getMarkedListSize() {
+    public int getMarkedTaskListSize() {
         int count = 0;
 
         for (int i = 0; i < taskList.size(); i++) {
@@ -130,7 +131,7 @@ public class TaskList {
 
         return count;
     }
-    public int getUnmarkedListSize() {
+    public int getUnmarkedTaskListSize() {
         int count = 0;
 
         for (int i = 0; i < taskList.size(); i++) {
@@ -144,16 +145,16 @@ public class TaskList {
     }
 
     //functions for getting item data from list...
-    public String getItemTitleFromList(int index) {
+    public String getTaskItemTitleFromList(int index) {
         return this.taskList.get(index).getTitle();
     }
-    public String getItemDescriptionFromList(int index) {
+    public String getTaskItemDescriptionFromList(int index) {
         return this.taskList.get(index).getDescription();
     }
-    public String getItemDueDateFromList(int index) {
+    public String getTaskItemDueDateFromList(int index) {
         return this.taskList.get(index).getDueDate();
     }
-    public boolean getItemStatusFromList(int index) {
+    public boolean getTaskItemStatusFromList(int index) {
         return this.taskList.get(index).getStatus();
     }
 
@@ -161,7 +162,7 @@ public class TaskList {
     public void saveTaskListToFile(String fileName) {
         //only proceed if taskList contains data...
         if(taskList.size() > 0) {
-            if (clearExistingFileContentsBeforeSaving(fileName)) {
+            if (clearExistingTaskFileContentsBeforeSaving(fileName)) {
                 //only continue if the file is blank to ensure that contents are not compromised...
                 try (Formatter output = new Formatter(fileName)) {
                     //store task items in file...
@@ -182,7 +183,7 @@ public class TaskList {
             System.out.println("You do not have a task list of items to save...");
         }
     }
-    public boolean clearExistingFileContentsBeforeSaving(String fileName) {
+    public boolean clearExistingTaskFileContentsBeforeSaving(String fileName) {
         boolean fileWasCleared = true;
 
         //create file object for deletion...
@@ -207,7 +208,7 @@ public class TaskList {
     }
 
     //load list from file...
-    public void loadTasks(String fileName) {
+    public void loadTaskListFromFile(String fileName) {
         String lineStatus;
         String lineTitle;
         String lineDescription;

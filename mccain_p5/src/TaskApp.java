@@ -45,7 +45,7 @@ public class TaskApp {
         //get filename...
         String fileName = retrieveFileNameFromUserInput();
         if(doesFileExist(fileName)) {
-            currentTaskList.loadTasks(fileName);
+            currentTaskList.loadTaskListFromFile(fileName);
         }
         else {
             System.out.println(fileName + " does not exist...");
@@ -72,25 +72,25 @@ public class TaskApp {
                 case "1":
                     //view tasks...
                     if(!isTaskListEmpty()) {
-                        currentTaskList.displayItemsInList();
+                        currentTaskList.displayTaskItemsInList();
                     }
                     break;
                 case "2":
                     //add task...
                     setTaskItemFromUserInput();
-                    currentTaskList.addItemToList(currentTaskItem);
+                    currentTaskList.addTaskItemToList(currentTaskItem);
                     break;
                 case "3":
                     //edit task...
                     if(!isTaskListEmpty()) {
-                        currentTaskList.displayItemsInList();
+                        currentTaskList.displayTaskItemsInList();
                         //get the task number to edit...
                         index = retrieveTaskNumberFromUserInput("edit");
                         if (isTaskNumberWithinBounds(index)) {
                             //set the current task item to newly entered user input...
                             setTaskItemFromUserInput();
                             //replace task item in current task list with the new item data...
-                            currentTaskList.editItemInList(currentTaskItem, index);
+                            currentTaskList.editTaskItemInList(currentTaskItem, index);
                             System.out.println("task #" + index + 1 + " was edited");
                         }
                     }
@@ -98,30 +98,30 @@ public class TaskApp {
                 case "4":
                     //remove task...
                     if(!isTaskListEmpty()) {
-                        currentTaskList.displayItemsInList();
+                        currentTaskList.displayTaskItemsInList();
                         index = retrieveTaskNumberFromUserInput("delete");
                         if (isTaskNumberWithinBounds(index)) {
-                            currentTaskList.deleteItemFromList(index);
+                            currentTaskList.deleteTaskItemFromList(index);
                         }
                     }
                     break;
                 case "5":
                     //mark tasks...
                     if(!isUnmarkedListEmpty()) {
-                        currentTaskList.displayUnmarkedTasksInList();
+                        currentTaskList.displayUnmarkedTaskItemsInList();
                         index = retrieveTaskNumberFromUserInput("mark");
                         if (isTaskNumberWithinBounds(index)) {
-                            currentTaskList.markItemInList(index);
+                            currentTaskList.markTaskItemInList(index);
                         }
                     }
                     break;
                 case "6":
                     //unmark tasks...
                     if(!isMarkedListEmpty()) {
-                        currentTaskList.displayMarkedTasksInList();
+                        currentTaskList.displayMarkedTaskItemsInList();
                         index = retrieveTaskNumberFromUserInput("unmark");
                         if (isTaskNumberWithinBounds(index)) {
-                            currentTaskList.unmarkItemInList(index);
+                            currentTaskList.unmarkTaskItemInList(index);
                         }
                     }
                     break;
@@ -220,7 +220,7 @@ public class TaskApp {
         return taskNum - 1;
     }
     public boolean isTaskNumberWithinBounds(int index) {
-        if (index >= 0 && index < currentTaskList.getEntireListSize()){
+        if (index >= 0 && index < currentTaskList.getEntireTaskListSize()){
             return true;
         } else {
             System.out.println("INVALID - that task number does not exist");
@@ -248,7 +248,7 @@ public class TaskApp {
 
     //CHECKER FUNCTIONS
     public boolean isTaskListEmpty() {
-        if(currentTaskList.getEntireListSize() == 0) {
+        if(currentTaskList.getEntireTaskListSize() == 0) {
             System.out.println("Currently, there are no tasks in your list...");
             return true;
         }
@@ -257,7 +257,7 @@ public class TaskApp {
         }
     }
     public boolean isMarkedListEmpty() {
-        if(currentTaskList.getMarkedListSize() == 0) {
+        if(currentTaskList.getMarkedTaskListSize() == 0) {
             System.out.println("Currently, there are no complete tasks...");
             return true;
         }
@@ -266,7 +266,7 @@ public class TaskApp {
         }
     }
     public boolean isUnmarkedListEmpty() {
-        if(currentTaskList.getUnmarkedListSize() == 0) {
+        if(currentTaskList.getUnmarkedTaskListSize() == 0) {
             System.out.println("Currently, there are no incomplete tasks...");
             return true;
         }

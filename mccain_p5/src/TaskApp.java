@@ -14,27 +14,20 @@ public class TaskApp {
     public void runTApp() {
         String mainMenuChoice;
 
-        //mainMenuOpen is initially true...
+        //TasksOpen is initially true...
         while (TasksOpen) {
             //main menu...
             displayTasksMainMenu();
             mainMenuChoice = retrieveTasksMainMenuInput();
             switch (mainMenuChoice) {
-                case "1":
-                    loadTaskMenu();
-                    break;
-                case "2":
-                    branchMenu();
-                    break;
-                case "3":
-                    TasksOpen = false;
-                    break;
-                default:
-                    System.out.println("ERROR - issue occurred with task main menu choice...");
+                case "1" -> loadTaskMenu();
+                case "2" -> branchMenu();
+                case "3" -> TasksOpen = false;
+                default -> System.out.println("ERROR - issue occurred with task options menu choice...");
             }
         }
 
-        System.out.println("Returning to Program Main Menu...");
+        System.out.println("Returning to program main menu...");
     }
 
     //menu option 1...
@@ -217,8 +210,14 @@ public class TaskApp {
     public boolean isTaskNumberWithinBounds(int index) {
         if (index >= 0 && index < currentTaskList.getEntireTaskListSize()){
             return true;
+        } else if (index == -1) {
+            System.out.println("0 is not a valid task number");
+            return false;
+        } else if(index < 0) {
+            System.out.println("You entered a negative number");
+            return false;
         } else {
-            System.out.println("INVALID - that task number does not exist");
+            System.out.println("There are only " + currentTaskList.getEntireTaskListSize() + " tasks");
             return false;
         }
     }
@@ -269,6 +268,8 @@ public class TaskApp {
             return false;
         }
     }
+    //MUST be static for thorough test case checking in <TaskListTest> and
+    //<ContactListTest> classes. The test cases are for saving and loading...
     public static boolean doesFileExist(String fileName) {
         File inputFile = new File(fileName);
 

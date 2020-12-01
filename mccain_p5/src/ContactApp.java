@@ -9,11 +9,26 @@ public class ContactApp {
     //initialize a temporary contact item for later use throughout the ContactApp class...
     private ContactItem currentContactItem = new ContactItem(
             "tempFirstName", "tempLastName", "tempPhoneNumber", "tempEmailAddress");
-    private boolean ContactsOpen = true;
+    private boolean contactsOpen = true;
 
     //ContactApp class should start by running here...
     public void runCApp() {
-        //most of the code will go here...
+        String mainMenuChoice;
+
+        //TasksOpen is initially true...
+        while (contactsOpen) {
+            //main menu...
+            displayContactsMainMenu();
+            mainMenuChoice = retrieveContactsMainMenuInput();
+            switch (mainMenuChoice) {
+                case "1" -> loadContactsMenu();
+                case "2" -> branchMenu();
+                case "3" -> contactsOpen = false;
+                default -> System.out.println("ERROR - issue occurred with contacts main menu choice...");
+            }
+        }
+
+        System.out.println("Returning to Program Main Menu...");
     }
 
     //menu option 1...
@@ -31,7 +46,79 @@ public class ContactApp {
 
     //menu option 2...
     public void branchMenu() {
-        //code here...
+        boolean branchMenuOpen = true;
+        String branchMenuChoice;
+        int index;
+        String fileName;
+        boolean fileExistence;
+        boolean overWriteFile;
+
+        while (branchMenuOpen) {
+            displayContactListOperationsMenu();
+            branchMenuChoice = retrieveContactListOperationsMenuInput();
+
+            switch (branchMenuChoice) {
+                case "1":
+                    //view contacts...
+                    if(!isContactListEmpty()) {
+                        currentContactList.displayContactItemsInList();
+                    }
+                    break;
+                case "2":
+                    //add contact...
+                    setContactItemFromUserInput();
+                    currentContactList.addContactItemToList(currentContactItem);
+                    break;
+                case "3":
+                    //edit contact...
+                    if(!isContactListEmpty()) {
+                        currentContactList.displayContactItemsInList();
+                        //get the contact index to edit...
+                        index = retrieveContactIndexFromUserInput("edit");
+                        if (isContactIndexWithinBounds(index)) {
+                            //set the current contact item to newly entered user input...
+                            setContactItemFromUserInput();
+                            //replace contact item in current contact list with the new item data...
+                            currentContactList.editContactItemInList(currentContactItem, index);
+                            System.out.println("contact #" + index + 1 + " was edited");
+                        }
+                    }
+                    break;
+                case "4":
+                    //remove contact...
+                    if(!isContactListEmpty()) {
+                        currentContactList.displayContactItemsInList();
+                        index = retrieveContactIndexFromUserInput("delete");
+                        if (isContactIndexWithinBounds(index)) {
+                            currentContactList.deleteContactItemFromList(index);
+                        }
+                    }
+                    break;
+                case "5":
+                    //save contacts...
+                    fileName = retrieveFileNameFromUserInput();
+                    fileExistence = doesFileExist(fileName);
+                    if (fileExistence) {
+                        overWriteFile = shouldFileBeOverWritten(fileName);
+                        if (overWriteFile) {
+                            currentContactList.saveContactListToFile(fileName);
+                        } else {
+                            System.out.println("You chose not to overwrite " + fileName);
+                        }
+                    }
+                    else {
+                        currentContactList.saveContactListToFile(fileName);
+                    }
+                    break;
+                case "6":
+                    //return to contact main menu...
+                    System.out.println("returning to contact options menu");
+                    branchMenuOpen = false;
+                    break;
+                default:
+                    System.out.println("ERROR - issue occurred with contact operation menu choice");
+            }
+        }
     }
 
     //USER FUNCTIONS
@@ -112,13 +199,16 @@ public class ContactApp {
         return contactIndex - 1;
     }
     public boolean isContactIndexWithinBounds(int index) {
-        if (index >= 0 && index < currentContactList.getEntireContactListSize()){
+        if (index >= 0 && index < currentContactList.getEntireContactListSize()) {
             return true;
+        } else if (index == -1) {
+            System.out.println("0 is not a valid contact number");
+            return false;
         } else if(index < 0) {
             System.out.println("You entered a negative number");
             return false;
         } else {
-            System.out.println("There is no " + index + " contact in the list");
+            System.out.println("There are only " + currentContactList.getEntireContactListSize() + " contacts");
             return false;
         }
     }
@@ -151,6 +241,8 @@ public class ContactApp {
             return false;
         }
     }
+    //MUST be static for thorough test case checking in <TaskListTest> and
+    //<ContactListTest> classes. The test cases are for saving and loading...
     public static boolean doesFileExist(String fileName) {
         File inputFile = new File(fileName);
 

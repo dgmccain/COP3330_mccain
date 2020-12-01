@@ -23,7 +23,9 @@ public class MainApp {
                     TApp.runTApp();
                     break;
                 case "2":
-                    //if contacts list is chosen
+                    //if contacts list is chosen...
+                    ContactApp CApp = new ContactApp();
+                    CApp.runCApp();
                     break;
                 case "3":
                     System.out.println("program closing...");

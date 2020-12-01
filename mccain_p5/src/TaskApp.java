@@ -2,32 +2,15 @@ import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/**
- *** TODO & NOTES ***
- ==============================================================================
- 1. find out how TaskApp and ContactsApp are supposed to be implemented
-    - I think having a MainApp class that creates a new TaskApp and ContactsApp
-    - within a <static void main> function, and each have their own <run>
-    - classes (where <run> operates like <main>) is the best approach...
- 2. side-note: file handling will most likely be handled here, or in TaskList
- 3. finish p4 here
- 4. after p4 is completed, include the necessary classes for contacts
- ==============================================================================
- **/
-
 public class TaskApp {
-    private static final Scanner userInput = new Scanner(System.in);
-    private static final TaskList currentTaskList = new TaskList();
-    //initialize a temporary task item for later use throughout the entire TaskApp class...
-    private static TaskItem currentTaskItem = new TaskItem("tempTitle", "tempDesc", "2020-01-01");
-    private static boolean TasksOpen = true;
 
-    public static void main(String[] args) {
-        TaskApp TApp = new TaskApp();
-        TApp.runTApp();
-    }
+    private final Scanner userInput = new Scanner(System.in);
+    private final TaskList currentTaskList = new TaskList();
+    //initialize a temporary task item for later use throughout the TaskApp class...
+    private TaskItem currentTaskItem = new TaskItem("tempTitle", "tempDesc", "2020-01-01");
+    private boolean TasksOpen = true;
 
-    //essentially equivalent in importance to main()
+    //essentially equivalent in importance to main()...
     public void runTApp() {
         String mainMenuChoice;
 
@@ -57,6 +40,7 @@ public class TaskApp {
         System.out.println("Returning to Program Main Menu...");
     }
 
+    //menu option 1...
     public void loadTaskMenu() {
         //get filename...
         String fileName = retrieveFileNameFromUserInput();
@@ -71,6 +55,7 @@ public class TaskApp {
         //function, passing in filename as a parameter...
     }
 
+    //menu option 2...
     public void branchMenu() {
         boolean branchMenuOpen = true;
         String branchMenuChoice;
@@ -299,11 +284,11 @@ public class TaskApp {
     //main menu functions...
     public void displayTasksMainMenu() {
         System.out.print(System.lineSeparator());
-        System.out.println("           - Tasks Main Menu -           ");
+        System.out.println("          - Task Options Menu -          ");
         System.out.println("*****************************************");
         System.out.println("* 1. load an existing task list         *");
         System.out.println("* 2. view current task list options     *");
-        System.out.println("* 3. quit to main menu                  *");
+        System.out.println("* 3. return to main menu                *");
         System.out.println("*****************************************");
     }
     public String retrieveTasksMainMenuInput() {
@@ -331,17 +316,17 @@ public class TaskApp {
     //branch menu functions...
     public void displayTaskListOperationsMenu() {
         System.out.print(System.lineSeparator());
-        System.out.println("    - Task List Operation Menu -    ");
-        System.out.println("************************************");
-        System.out.println("* 1. view current task list        *");
-        System.out.println("* 2. add a task                    *");
-        System.out.println("* 3. edit a task                   *");
-        System.out.println("* 4. delete a task                 *");
-        System.out.println("* 5. set a task as complete        *");
-        System.out.println("* 6. set a task as incomplete      *");
-        System.out.println("* 7. save current task list        *");
-        System.out.println("* 8. quit to task list main menu   *");
-        System.out.println("************************************");
+        System.out.println("      - Task List Operations Menu -      ");
+        System.out.println("*****************************************");
+        System.out.println("* 1. view current task list             *");
+        System.out.println("* 2. add a task                         *");
+        System.out.println("* 3. edit a task                        *");
+        System.out.println("* 4. delete a task                      *");
+        System.out.println("* 5. set a task as complete             *");
+        System.out.println("* 6. set a task as incomplete           *");
+        System.out.println("* 7. save current task list             *");
+        System.out.println("* 8. return to task list options menu   *");
+        System.out.println("*****************************************");
     }
     public String retrieveTaskListOperationsMenuInput() {
         String choice = "";
@@ -364,15 +349,5 @@ public class TaskApp {
         return choice;
     }
 
-    /**
-     ==========================================================
-     the main app class should have the following options:
-     option 1: open this taskApp...
-     option 2: open ContactsApp...
-     option 3: quit/close the program (the entire program)...
-     ==========================================================
-     at the moment, the second (main) constructor is never used
-     - only the default constructor is called...
-     ==========================================================
-     **/
+    //return to MainApp.runMApp()...
 }

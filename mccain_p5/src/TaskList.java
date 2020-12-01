@@ -12,11 +12,13 @@ public class TaskList {
         //default constructor...
     }
 
+    //ADD
     //add item to list...
     public void addTaskItemToList(TaskItem taskItem) {
         taskList.add(taskItem);
     }
 
+    //UPDATE
     //edit items in list...
     public void editTaskItemInList(TaskItem updatedTaskItem, int location) {
         try {
@@ -29,12 +31,14 @@ public class TaskList {
         }
     }
 
+    //REMOVE
     //delete item from list...
     public void deleteTaskItemFromList(int index) {
         taskList.remove(index);
         System.out.println("task #" + (index + 1) + " was deleted");
     }
 
+    //VIEW
     //display entire list contents...
     public void displayTaskItemsInList() {
         String mark = "***";
@@ -51,7 +55,6 @@ public class TaskList {
                     this.taskList.get(i).getDescription() + " [" + this.taskList.get(i).getDueDate() + "]");
         }
     }
-
     //display marked/unmarked task items in task list...
     public void displayMarkedTaskItemsInList() {
         String mark = "***";
@@ -83,6 +86,7 @@ public class TaskList {
         }
     }
 
+    //SET
     //set task item in task list to marked/unmarked...
     public void markTaskItemInList(int index) {
         int taskNum = index + 1;
@@ -115,6 +119,7 @@ public class TaskList {
         }
     }
 
+    //GET
     //function for getting sizes of list...
     public int getEntireTaskListSize() {
         return taskList.size();
@@ -143,7 +148,6 @@ public class TaskList {
 
         return count;
     }
-
     //functions for getting item data from list...
     public String getTaskItemTitleFromList(int index) {
         return this.taskList.get(index).getTitle();
@@ -158,6 +162,7 @@ public class TaskList {
         return this.taskList.get(index).getStatus();
     }
 
+    //STORE
     //store list to file...
     public void saveTaskListToFile(String fileName) {
         //only proceed if taskList contains data...
@@ -207,6 +212,7 @@ public class TaskList {
         return fileWasCleared;
     }
 
+    //LOAD
     //load list from file...
     public void loadTaskListFromFile(String fileName) {
         String lineStatus;

@@ -30,7 +30,7 @@ public class MainApp {
                     isMainMenuOpen = false;
                     break;
                 default:
-                    System.out.println("ERROR - issue occurered with main menu choice");
+                    System.out.println("ERROR - issue occurred with main menu choice");
             }
         }
     }

@@ -27,9 +27,6 @@ public class TaskApp {
                     branchMenu();
                     break;
                 case "3":
-                    //this is the old code's quitKey, but it should return the user to
-                    //the ACTUAL main menu (with options for Tasks, Contacts, and Quit
-                    //Program instead of closing the program from here...
                     TasksOpen = false;
                     break;
                 default:

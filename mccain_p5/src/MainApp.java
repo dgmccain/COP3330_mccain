@@ -3,11 +3,13 @@ import java.util.Scanner;
 public class MainApp {
     private final Scanner userInput = new Scanner(System.in);
 
+    //program entry point...
     public static void main(String[] args) {
         MainApp MApp = new MainApp();
         MApp.runMApp();
     }
 
+    //RUN PROGRAM
     public void runMApp() {
         boolean isMainMenuOpen = true;
         String mainMenuChoice;

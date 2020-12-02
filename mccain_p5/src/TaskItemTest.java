@@ -62,7 +62,7 @@ class TaskItemTest {
     @Test
     public void TestCreateTaskItemFailsWithInvalidDueDate2() {
         assertThrows(IllegalArgumentException.class, () ->
-                new TaskItem("title", "desc", "2020/01/01"));
+                new TaskItem("title", "desc", "2020 01 01"));
     }
 
     //fails to create due date of invalid month...
@@ -104,7 +104,7 @@ class TaskItemTest {
         TaskItem testItem = new TaskItem("title", "desc", "2020-01-01");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            testItem.setDueDate("2020/01/01");
+            testItem.setDueDate("2020 01 01");
         });
     }
 

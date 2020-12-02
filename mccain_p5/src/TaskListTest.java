@@ -352,8 +352,10 @@ class TaskListTest {
         //be identical in name to the save file...
         TaskList testList = new TaskList();
 
+        //load list...
         testList.loadTaskListFromFile("saveTaskList_ExampleFile1.txt");
 
+        //verify loaded list contents...
         assertEquals("title", testList.getTaskItemTitleFromList(0));
         assertEquals("desc", testList.getTaskItemDescriptionFromList(0));
         assertEquals("2020-01-01", testList.getTaskItemDueDateFromList(0));

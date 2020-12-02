@@ -10,7 +10,7 @@ public class TaskApp {
     private TaskItem currentTaskItem = new TaskItem("tempTitle", "tempDesc", "2020-01-01");
     private boolean TasksOpen = true;
 
-    //TaskApp class should start by running here...
+    //run TaskApp class...
     public void runTApp() {
         String mainMenuChoice;
 

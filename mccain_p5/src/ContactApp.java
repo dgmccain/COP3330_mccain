@@ -11,7 +11,7 @@ public class ContactApp {
             "tempFirstName", "tempLastName", "tempPhoneNumber", "tempEmailAddress");
     private boolean contactsOpen = true;
 
-    //ContactApp class should start by running here...
+    //run ContactApp class...
     public void runCApp() {
         String mainMenuChoice;
 
